@@ -1,0 +1,3853 @@
+{
+  "amcs": [
+    {
+      "slug": "ppfas",
+      "name": "PPFAS Mutual Fund",
+      "factsheet_url": "https://amc.ppfas.com/downloads/factsheet/",
+      "archive_from": "2013-06",
+      "status": "loaded"
+    }
+  ],
+  "funds": [
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "122639",
+      "scheme_name": "Parag Parikh Flexi Cap Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01027",
+      "isin_reinvest": null,
+      "category": "Equity - Flexi Cap Fund",
+      "asset_class": "equity",
+      "plan_type": "direct-growth"
+    },
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "147481",
+      "scheme_name": "Parag Parikh ELSS Tax Saver Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01100",
+      "isin_reinvest": null,
+      "category": "Equity - ELSS",
+      "asset_class": "equity",
+      "plan_type": "direct-growth"
+    },
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "154155",
+      "scheme_name": "Parag Parikh Large Cap Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01332",
+      "isin_reinvest": null,
+      "category": "Equity - Large Cap Fund",
+      "asset_class": "equity",
+      "plan_type": "direct-growth"
+    },
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "152468",
+      "scheme_name": "Parag Parikh Dynamic Asset Allocation Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01266",
+      "isin_reinvest": null,
+      "category": "Hybrid - Dynamic Asset Allocation",
+      "asset_class": "hybrid",
+      "plan_type": "direct-growth"
+    },
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "148958",
+      "scheme_name": "Parag Parikh Conservative Hybrid Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01175",
+      "isin_reinvest": null,
+      "category": "Hybrid - Conservative Hybrid Fund",
+      "asset_class": "debt",
+      "plan_type": "direct-growth"
+    },
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "152109",
+      "scheme_name": "Parag Parikh Arbitrage Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01225",
+      "isin_reinvest": null,
+      "category": "Hybrid - Arbitrage Fund",
+      "asset_class": "equity",
+      "plan_type": "direct-growth"
+    },
+    {
+      "amc_slug": "ppfas",
+      "amfi_code": "143269",
+      "scheme_name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+      "isin_growth": "INF879O01068",
+      "isin_reinvest": null,
+      "category": "Debt - Liquid Fund",
+      "asset_class": "debt",
+      "plan_type": "direct-growth"
+    }
+  ],
+  "disclosures": [
+    {
+      "amfi_code": "122639",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "122639",
+        "scheme_name": "Parag Parikh Flexi Cap Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Equity - Flexi Cap Fund",
+        "isin": "INF879O01027",
+        "asset_class": "equity",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 141446.73,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 97,
+        "total_weight": 100.0,
+        "deployable_cash": 7.18,
+        "asset_allocation": [
+          {
+            "name": "Equity",
+            "weight": 87.08
+          },
+          {
+            "name": "Debt",
+            "weight": 12.92
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "Banks",
+            "weight": 20.13
+          },
+          {
+            "name": "IT - Software",
+            "weight": 9.2
+          },
+          {
+            "name": "Power",
+            "weight": 6.41
+          },
+          {
+            "name": "Automobiles",
+            "weight": 6.27
+          },
+          {
+            "name": "Diversified FMCG",
+            "weight": 5.84
+          },
+          {
+            "name": "Consumable Fuels",
+            "weight": 5.66
+          },
+          {
+            "name": "Computer Software",
+            "weight": 4.83
+          },
+          {
+            "name": "Finance",
+            "weight": 4.48
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [
+          {
+            "section": "Cash & Money Market",
+            "weight": 7.18
+          }
+        ],
+        "top_holdings": [
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 7.88
+          },
+          {
+            "name": "Power Grid Corporation of India Limited",
+            "isin": "",
+            "sector": "Power",
+            "weight": 6.41
+          },
+          {
+            "name": "ITC Limited",
+            "isin": "",
+            "sector": "Diversified FMCG",
+            "weight": 5.84
+          },
+          {
+            "name": "Coal India Limited",
+            "isin": "",
+            "sector": "Consumable Fuels",
+            "weight": 5.66
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 5.11
+          },
+          {
+            "name": "Alphabet Inc A",
+            "isin": "",
+            "sector": "Computer Software",
+            "weight": 4.83
+          },
+          {
+            "name": "Bajaj Holdings & Investment Limited",
+            "isin": "",
+            "sector": "Finance",
+            "weight": 4.48
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 4.12
+          },
+          {
+            "name": "TREPS Including Cash & Cash Equivalent and Net Current Asset",
+            "isin": "",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 4.09
+          },
+          {
+            "name": "HCL Technologies Limited",
+            "isin": "",
+            "sector": "IT - Software",
+            "weight": 3.6
+          }
+        ],
+        "holdings": [
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CAREA1+",
+            "weight": 0.14,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Punjab National Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.14,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "IND A1+",
+            "weight": 0.14,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.14,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.13,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.12,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "IND A1+",
+            "weight": 0.12,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CAREA1+",
+            "weight": 0.12,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.11,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.11,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CAREA1+",
+            "weight": 0.11,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.1,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.1,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.09,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "IND A1+",
+            "weight": 0.09,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Canara Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CAREA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CAREA1+",
+            "weight": 0.04,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.03,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.32,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Export Import Bank of India",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.28,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Securities Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.09,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Securities Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.04,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bajaj Finance Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.04,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Securities Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+ $",
+            "weight": 0.0,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "Commercial Paper",
+            "weight": 0.46,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.24,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.14,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.08,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "TREPS Including Cash & Cash Equivalent and Net Current Asset",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 4.09,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 7.88,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Power Grid Corporation of India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Power",
+            "weight": 6.41,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ITC Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Diversified FMCG",
+            "weight": 5.84,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Coal India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Consumable Fuels",
+            "weight": 5.66,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 5.11,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bajaj Holdings & Investment Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Finance",
+            "weight": 4.48,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 4.12,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HCL Technologies Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 3.6,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mahindra & Mahindra Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Automobiles",
+            "weight": 3.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Infosys Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 3.06,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 3.02,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Maruti Suzuki India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Automobiles",
+            "weight": 2.82,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bharti Airtel Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom - Services",
+            "weight": 2.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Tata Consultancy Services Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 2.54,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Zydus Lifesciences Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Pharmaceuticals &",
+            "weight": 1.47,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Cipla Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Pharmaceuticals",
+            "weight": 1.39,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Cipla Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "&",
+            "weight": 1.32,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Dr. Reddy's Laboratories Limited Indraprastha Gas Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Pharmaceuticals Gas",
+            "weight": 1.0,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Zydus Wellness Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Food Products",
+            "weight": 0.79,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Energy Exchange Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Capital Markets",
+            "weight": 0.75,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "EID Parry India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Food Products",
+            "weight": 0.44,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Narayana Hrudayalaya Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Healthcare Services",
+            "weight": 0.27,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "The Great Eastern Shipping Company Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Transport Services",
+            "weight": 0.22,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Central Depository Services (India) Limited Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Capital Markets",
+            "weight": 0.2,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "CMS Info System",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Commercial Services & Supplies",
+            "weight": 0.16,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICRA Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Capital",
+            "weight": 0.11,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICRA Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Markets",
+            "weight": 0.08,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mahanagar Gas Limited Indus Towers Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Gas",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mahanagar Gas Limited Indus Towers Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom",
+            "weight": 0.03,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "CIE Automotive India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Auto Components",
+            "weight": 0.01,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Swaraj Engines Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Industrial Products",
+            "weight": 0.01,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Nesco Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Commercial Services & Supplies",
+            "weight": 0.01,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "@ Arbitrage and Special",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Maharashtra Scooters Limited Finance",
+            "weight": 0.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Alphabet Inc A",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Computer Software",
+            "weight": 4.83,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Amazon Com Inc",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Catalog",
+            "weight": 2.51,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Amazon Com Inc",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "/",
+            "weight": 2.51,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Meta Platforms Registered Shares A Microsoft Corp",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Computer Computer Software",
+            "weight": 2.22,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Units issued by REITs & InvITs",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Overseas Securities, IDRs and ADRs",
+            "weight": 2.52,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Brookfield India Real Estate Trust Mindspace Business Parks REIT",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 1.55,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Brookfield India Real Estate Trust Mindspace Business Parks REIT",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 0.03,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "Certificate of Deposit",
+            "weight": 0.47,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "Certificate of Deposit",
+            "weight": 0.44,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 0.42,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.35,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Development (18/09/2026) CRISILA1+",
+            "weight": 0.35,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Rural",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Canara Bank (12/06/2026)",
+            "weight": 0.34,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.33,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Canara Bank (18/12/2026) HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.31,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Canara Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+ CRISILA1+",
+            "weight": 0.28,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Kotak Mahindra Bank Limited (18/12/2026)",
+            "weight": 0.27,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Kotak Mahindra Bank Limited (18/12/2026)",
+            "weight": 0.25,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "IND A1+",
+            "weight": 0.23,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.21,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "India Bank of India",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "(13/10/2026)",
+            "weight": 0.21,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "India Bank of India",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "CRISILA1+",
+            "weight": 0.21,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.21,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Indian Bank (22/01/2027)",
+            "weight": 0.2,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Indian Bank (22/01/2027)",
+            "weight": 0.19,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.17,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "IND A1+",
+            "weight": 0.17,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development Punjab National Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "(19/01/2027)",
+            "weight": 0.17,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development Punjab National Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.15,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    },
+    {
+      "amfi_code": "147481",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "147481",
+        "scheme_name": "Parag Parikh ELSS Tax Saver Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Equity - ELSS",
+        "isin": "INF879O01100",
+        "asset_class": "equity",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 5539.59,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 44,
+        "total_weight": 98.93,
+        "deployable_cash": 3.18,
+        "asset_allocation": [
+          {
+            "name": "Equity",
+            "weight": 95.75
+          },
+          {
+            "name": "Debt",
+            "weight": 3.18
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "Banks",
+            "weight": 20.31
+          },
+          {
+            "name": "Finance",
+            "weight": 12.05
+          },
+          {
+            "name": "IT - Software",
+            "weight": 11.33
+          },
+          {
+            "name": "Automobiles",
+            "weight": 7.3
+          },
+          {
+            "name": "Power",
+            "weight": 7.16
+          },
+          {
+            "name": "Consumable Fuels",
+            "weight": 6.79
+          },
+          {
+            "name": "Diversified FMCG",
+            "weight": 5.35
+          },
+          {
+            "name": "Realty",
+            "weight": 4.82
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [
+          {
+            "section": "Cash & Money Market",
+            "weight": 3.18
+          }
+        ],
+        "top_holdings": [
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 7.76
+          },
+          {
+            "name": "Power Grid Corporation of India Limited",
+            "isin": "",
+            "sector": "Power",
+            "weight": 7.16
+          },
+          {
+            "name": "Coal India Limited",
+            "isin": "",
+            "sector": "Consumable Fuels",
+            "weight": 6.79
+          },
+          {
+            "name": "Bajaj Holdings & Investment Limited",
+            "isin": "",
+            "sector": "Finance",
+            "weight": 6.6
+          },
+          {
+            "name": "Maharashtra Scooters Limited",
+            "isin": "",
+            "sector": "Finance",
+            "weight": 5.45
+          },
+          {
+            "name": "ITC Limited",
+            "isin": "",
+            "sector": "Diversified FMCG",
+            "weight": 5.35
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 4.62
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 4.22
+          },
+          {
+            "name": "HCL Technologies Limited",
+            "isin": "",
+            "sector": "IT - Software",
+            "weight": 4.09
+          },
+          {
+            "name": "Maruti Suzuki India Limited",
+            "isin": "",
+            "sector": "Automobiles",
+            "weight": 3.77
+          }
+        ],
+        "holdings": [
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 7.76,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Power Grid Corporation of India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Power",
+            "weight": 7.16,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Coal India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Consumable Fuels",
+            "weight": 6.79,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bajaj Holdings & Investment Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Finance",
+            "weight": 6.6,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Maharashtra Scooters Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Finance",
+            "weight": 5.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ITC Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Diversified FMCG",
+            "weight": 5.35,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 4.62,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 4.22,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HCL Technologies Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 4.09,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Maruti Suzuki India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Automobiles",
+            "weight": 3.77,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 3.71,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Infosys Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 3.56,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mahindra & Mahindra Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Automobiles",
+            "weight": 3.53,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bharti Airtel Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom - Services",
+            "weight": 3.46,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "CMS Info System Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Commercial Services & Supplies",
+            "weight": 3.39,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "CCL Products (India) Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Agricultural Food & other Products",
+            "weight": 2.67,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Tata Consultancy Services Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 1.86,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Wipro Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 1.82,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Zydus Lifesciences Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Pharmaceuticals & Biotechnology",
+            "weight": 1.58,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Dr. Reddy's Laboratories Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Pharmaceuticals & Biotechnology",
+            "weight": 1.43,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Cipla Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Pharmaceuticals & Biotechnology",
+            "weight": 1.39,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "VST Industries Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Cigarettes & Tobacco Products",
+            "weight": 1.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Energy Exchange Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Capital Markets",
+            "weight": 0.92,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "West Coast Paper Mills Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Paper, Forest & Jute Products",
+            "weight": 0.84,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Seshaasai Technologies Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Financial Technology (Fintech)",
+            "weight": 0.69,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Sharda Motor Industries Ltd.",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Auto Components",
+            "weight": 0.52,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indraprastha Gas Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Gas",
+            "weight": 0.51,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "EID Parry India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Food Products",
+            "weight": 0.48,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Narayana Hrudayalaya Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Healthcare Services",
+            "weight": 0.36,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "The Great Eastern Shipping Company Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Transport Services",
+            "weight": 0.34,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Central Depository Services (India) Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Capital Markets",
+            "weight": 0.23,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Swaraj Engines Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Industrial Products",
+            "weight": 0.22,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Sundrop Brands Ltd",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Agricultural Food & other Products",
+            "weight": 0.2,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indus Towers Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom - Services",
+            "weight": 0.12,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mahanagar Gas Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Gas",
+            "weight": 0.08,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICRA Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Capital Markets",
+            "weight": 0.06,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Nesco Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Commercial Services & Supplies",
+            "weight": 0.03,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "CIE Automotive India Limited Siyaram Silk Mills Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Auto",
+            "weight": 0.03,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "CIE Automotive India Limited Siyaram Silk Mills Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Components",
+            "weight": 0.02,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Embassy Office Parks REIT",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 2.48,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Brookfield India Real Estate Trust",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 2.34,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.17,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.09,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reverse Repo / TREPS and Other Receivables and Payables",
+            "isin": "",
+            "instrument_type": "treps",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 2.92,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    },
+    {
+      "amfi_code": "154155",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "154155",
+        "scheme_name": "Parag Parikh Large Cap Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Equity - Large Cap Fund",
+        "isin": "INF879O01332",
+        "asset_class": "equity",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 739.03,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 14,
+        "total_weight": 100.0,
+        "deployable_cash": 0,
+        "asset_allocation": [
+          {
+            "name": "Equity",
+            "weight": 98.94
+          },
+          {
+            "name": "Others",
+            "weight": 1.06
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "Unclassified",
+            "weight": 56.33
+          },
+          {
+            "name": "Banks",
+            "weight": 22.99
+          },
+          {
+            "name": "Petroleum Products",
+            "weight": 6.64
+          },
+          {
+            "name": "Telecom - Services",
+            "weight": 4.18
+          },
+          {
+            "name": "Construction",
+            "weight": 3.56
+          },
+          {
+            "name": "IT - Software",
+            "weight": 3.03
+          },
+          {
+            "name": "Diversified FMCG",
+            "weight": 2.05
+          },
+          {
+            "name": "Debt and Money Market Instruments",
+            "weight": 0.99
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [],
+        "top_holdings": [
+          {
+            "name": "Others",
+            "isin": "",
+            "sector": "",
+            "weight": 56.33
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 8.48
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 6.68
+          },
+          {
+            "name": "Reliance Industries Limited",
+            "isin": "",
+            "sector": "Petroleum Products",
+            "weight": 6.64
+          },
+          {
+            "name": "Bharti Airtel Limited",
+            "isin": "",
+            "sector": "Telecom - Services",
+            "weight": 4.18
+          },
+          {
+            "name": "Larsen & Toubro Limited",
+            "isin": "",
+            "sector": "Construction",
+            "weight": 3.56
+          },
+          {
+            "name": "Infosys Limited",
+            "isin": "",
+            "sector": "IT - Software",
+            "weight": 3.03
+          },
+          {
+            "name": "State Bank of India",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 2.98
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 2.75
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 2.1
+          }
+        ],
+        "holdings": [
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 8.48,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 6.68,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reliance Industries Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Petroleum Products",
+            "weight": 6.64,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bharti Airtel Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom - Services",
+            "weight": 4.18,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Larsen & Toubro Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Construction",
+            "weight": 3.56,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Infosys Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "IT - Software",
+            "weight": 3.03,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "State Bank of India",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 2.98,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 2.75,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 2.1,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ITC Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Diversified FMCG",
+            "weight": 2.05,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Others",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "",
+            "weight": 56.33,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Orient Cement Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Cement & Cement Products",
+            "weight": 0.16,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Parag Parikh Liquid Fund- Direct Plan- Growth",
+            "isin": "",
+            "instrument_type": "fund",
+            "sector": "Mutual Fund Units",
+            "weight": 0.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "TREPS Including Cash & Cash Equivalent and Net Current Asset TREPS and Other Receivables and Payables",
+            "isin": "",
+            "instrument_type": "fund",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 0.99,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    },
+    {
+      "amfi_code": "152468",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "152468",
+        "scheme_name": "Parag Parikh Dynamic Asset Allocation Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Hybrid - Dynamic Asset Allocation",
+        "isin": "INF879O01266",
+        "asset_class": "hybrid",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 2691.13,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 38,
+        "total_weight": 98.69,
+        "deployable_cash": 3.62,
+        "asset_allocation": [
+          {
+            "name": "Equity",
+            "weight": 41.59
+          },
+          {
+            "name": "Debt",
+            "weight": 57.1
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "Sovereign",
+            "weight": 44.86
+          },
+          {
+            "name": "Name Industry %of Net Assets",
+            "weight": 18.95
+          },
+          {
+            "name": "Realty",
+            "weight": 10.15
+          },
+          {
+            "name": "CRISILAAA",
+            "weight": 6.95
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "weight": 4.0
+          },
+          {
+            "name": "Debt and Money Market Instruments",
+            "weight": 3.44
+          },
+          {
+            "name": "Fuels",
+            "weight": 3.07
+          },
+          {
+            "name": "FMCG",
+            "weight": 2.41
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [
+          {
+            "section": "Cash & Money Market",
+            "weight": 3.62
+          }
+        ],
+        "top_holdings": [
+          {
+            "name": "Other Government Securities",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 22.74
+          },
+          {
+            "name": "@ Arbitrage and Special Situations",
+            "isin": "",
+            "sector": "Name Industry %of Net Assets",
+            "weight": 12.7
+          },
+          {
+            "name": "Embassy Office Parks REIT",
+            "isin": "",
+            "sector": "Realty",
+            "weight": 5.15
+          },
+          {
+            "name": "Brookfield India Real Estate Trust",
+            "isin": "",
+            "sector": "Realty",
+            "weight": 5.0
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "isin": "",
+            "sector": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "weight": 4.0
+          },
+          {
+            "name": "7.12% Tamilnadu SDL",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 3.63
+          },
+          {
+            "name": "Reverse Repo / TREPS and Other Receivables and Payables",
+            "isin": "",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 3.44
+          },
+          {
+            "name": "Coal India Limited Consumable",
+            "isin": "",
+            "sector": "Fuels",
+            "weight": 3.07
+          },
+          {
+            "name": "7.72% Maharashtra SDL",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 2.81
+          },
+          {
+            "name": "Power Grid Corporation of India Limited Power",
+            "isin": "",
+            "sector": "Name Industry %of Net Assets",
+            "weight": 2.74
+          }
+        ],
+        "holdings": [
+          {
+            "name": "Coal India Limited Consumable",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Fuels",
+            "weight": 3.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Power Grid Corporation of India Limited Power",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Name Industry %of Net Assets",
+            "weight": 2.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Petronet LNG Limited Gas",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Name Industry %of Net Assets",
+            "weight": 2.52,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ITC Limited Diversified",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "FMCG",
+            "weight": 2.41,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Swaraj Engines Limited Industrial",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Products",
+            "weight": 1.01,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Nesco Limited Commercial",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Services & Supplies",
+            "weight": 0.99,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "REC Limited Finance",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Name Industry %of Net Assets",
+            "weight": 0.99,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "VST Industries Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Cigarettes & Tobacco Products",
+            "weight": 0.85,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "NIRLON LIMITED Commercial",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Services & Supplies",
+            "weight": 0.1,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indus Towers Limited Telecom -",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Services",
+            "weight": 0.06,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "@ Arbitrage and Special Situations",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Name Industry %of Net Assets",
+            "weight": 12.7,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Embassy Office Parks REIT",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 5.15,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Brookfield India Real Estate Trust",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 5.0,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.64% National Bank For Agriculture and Rural Development NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "ICRAAAA",
+            "weight": 1.85,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.49% Small Industries Development Bank of India NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.92,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.42% Small Industries Development Bank of India NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.92,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.57% LIC Housing Finance NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.92,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.3763% Bajaj Finance NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.92,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.40 %National Bank For Agriculture and Rural Development NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.92,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.38% Bajaj Finance Ltd NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.07% LIC Housing Finance NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.07% IndiGrid Inf NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.36,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.87% IndiGRID Infra Trust",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.19,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.12% Tamilnadu SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 3.63,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.72% Maharashtra SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 2.81,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.6% Karnataka SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 2.59,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.61% Gujarat SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.86,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.08% Uttar Pradesh SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.83,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "6.95% Tamilnadu SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.82,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.01% Gujarat SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.82,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.55% Gujarat SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.5,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.39% Tamilnadu SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.47,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.81% Gujarat SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.31,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.69% Maharashtra SDL (MD 15/03/2031) 7.7% Karnataka SDL",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 1.3,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Other Government Securities",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 22.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Treasury Bills 364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.18,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "weight": 4.0,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reverse Repo / TREPS and Other Receivables and Payables",
+            "isin": "",
+            "instrument_type": "treps",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 3.44,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    },
+    {
+      "amfi_code": "148958",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "148958",
+        "scheme_name": "Parag Parikh Conservative Hybrid Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Hybrid - Conservative Hybrid Fund",
+        "isin": "INF879O01175",
+        "asset_class": "debt",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 3344.68,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 41,
+        "total_weight": 100.0,
+        "deployable_cash": 0.15,
+        "asset_allocation": [
+          {
+            "name": "Equity",
+            "weight": 21.46
+          },
+          {
+            "name": "Debt",
+            "weight": 77.37
+          },
+          {
+            "name": "Others",
+            "weight": 1.17
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "Sovereign",
+            "weight": 57.82
+          },
+          {
+            "name": "Realty",
+            "weight": 10.72
+          },
+          {
+            "name": "CRISIL AAA",
+            "weight": 9.11
+          },
+          {
+            "name": "Debt and Money Market Instruments",
+            "weight": 3.45
+          },
+          {
+            "name": "CRISILAAA",
+            "weight": 2.66
+          },
+          {
+            "name": "(MD 11/06/2029)",
+            "weight": 2.57
+          },
+          {
+            "name": "Consumable Fuels",
+            "weight": 2.31
+          },
+          {
+            "name": "Power",
+            "weight": 2.08
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [
+          {
+            "section": "Cash & Money Market",
+            "weight": 0.15
+          }
+        ],
+        "top_holdings": [
+          {
+            "name": "Other Government Securities",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 33.23
+          },
+          {
+            "name": "Embassy Office Parks REIT",
+            "isin": "",
+            "sector": "Realty",
+            "weight": 5.08
+          },
+          {
+            "name": "Brookfield India Real Estate Trust",
+            "isin": "",
+            "sector": "Realty",
+            "weight": 4.96
+          },
+          {
+            "name": "Government securities/State Development Loans (SDLs)",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 4.41
+          },
+          {
+            "name": "7.08% Uttar Pradesh SDL (MD 17/02/2031) 7.08% Karnataka SDL",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 4.11
+          },
+          {
+            "name": "7.72% Maharashtra SDL",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 3.77
+          },
+          {
+            "name": "Reverse Repo /TREPS and Other Receivables and Payables",
+            "isin": "",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 3.45
+          },
+          {
+            "name": "7.38% Karnataka SDL",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 2.79
+          },
+          {
+            "name": "7.82% Tamilnadu SDL",
+            "isin": "",
+            "sector": "(MD 11/06/2029)",
+            "weight": 2.57
+          },
+          {
+            "name": "Coal India Limited",
+            "isin": "",
+            "sector": "Consumable Fuels",
+            "weight": 2.31
+          }
+        ],
+        "holdings": [
+          {
+            "name": "Coal India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Consumable Fuels",
+            "weight": 2.31,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Power Grid Corporation of India Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Power",
+            "weight": 2.08,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ITC Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Diversified FMCG",
+            "weight": 1.91,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Petronet LNG Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Gas Finance",
+            "weight": 1.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "REC Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Name Industry",
+            "weight": 0.95,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Swaraj Engines Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Industrial Products",
+            "weight": 0.71,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indus Towers Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom - Services",
+            "weight": 0.08,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Arbitrage and Special Situations",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Name Industry",
+            "weight": 0.8,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Embassy Office Parks REIT",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 5.08,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Brookfield India Real Estate Trust",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Realty",
+            "weight": 4.96,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mindspace Business Parks REIT",
+            "isin": "",
+            "instrument_type": "reit",
+            "sector": "Realty",
+            "weight": 0.68,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.49% Small Industries Development Bank of India NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 2.22,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.64% National Bank For Agriculture and Rural Development NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "ICRA AAA",
+            "weight": 1.49,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.3763% Bajaj Finance NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 1.47,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.40 % National Bank For Agriculture and Rural Development NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 1.47,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "8.12% Bajaj Finance Ltd NCD (MD 10/09/27)",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.75,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.75% LIC Housing Finance Ltd NCD (MD23/08/29)",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "(MD 21/03/2030) 7.39% Small Industries Development Bank of India NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.60% Bajaj Finance Ltd NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.73,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.38% Bajaj Finance Ltd NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.73,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.03% National Bk Fin Infra tranch I NCD (MD8/4/30)",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.73,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.07% LIC Housing Finance NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.73,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "6.86% National Bk Fin Infra",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.72,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.07% IndiGrid Inf NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.44,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.87% IndiGRID Infra Trust",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.15,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.7% IndiGRID Infra Trust",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISIL AAA",
+            "weight": 0.15,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Government securities/State Development Loans (SDLs)",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 4.41,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.08% Uttar Pradesh SDL (MD 17/02/2031) 7.08% Karnataka SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 4.11,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.72% Maharashtra SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 3.77,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.38% Karnataka SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 2.79,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.82% Tamilnadu SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "(MD 11/06/2029)",
+            "weight": 2.57,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.93% Uttar Pradesh SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 2.28,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.76% Maharashtra SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 2.27,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.55% Gujarat SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 1.71,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "6.78% Maharashtra SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 1.6,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.61% Gujarat SDL",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "Sovereign",
+            "weight": 1.5,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Other Government Securities",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 33.23,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.15,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "isin": "",
+            "instrument_type": "fund",
+            "sector": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "weight": 1.17,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Corporate Debt Market Development Fund - Class A2 Units",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "Corporate Debt Market Development Fund A2",
+            "weight": 0.27,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reverse Repo /TREPS and Other Receivables and Payables",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 3.45,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    },
+    {
+      "amfi_code": "152109",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "152109",
+        "scheme_name": "Parag Parikh Arbitrage Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Hybrid - Arbitrage Fund",
+        "isin": "INF879O01225",
+        "asset_class": "equity",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 2510.12,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 24,
+        "total_weight": 100.0,
+        "deployable_cash": 15.67,
+        "asset_allocation": [
+          {
+            "name": "Equity",
+            "weight": 67.1
+          },
+          {
+            "name": "Debt",
+            "weight": 17.65
+          },
+          {
+            "name": "Others",
+            "weight": 15.25
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "Unclassified",
+            "weight": 27.28
+          },
+          {
+            "name": "Banks",
+            "weight": 22.23
+          },
+          {
+            "name": "Mutual Fund Units",
+            "weight": 15.25
+          },
+          {
+            "name": "CRISILA1+",
+            "weight": 12.49
+          },
+          {
+            "name": "Petroleum Products",
+            "weight": 4.74
+          },
+          {
+            "name": "Telecom - Services",
+            "weight": 4.43
+          },
+          {
+            "name": "Electrical Equipment",
+            "weight": 3.28
+          },
+          {
+            "name": "Automobiles",
+            "weight": 2.76
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [
+          {
+            "section": "Cash & Money Market",
+            "weight": 15.67
+          }
+        ],
+        "top_holdings": [
+          {
+            "name": "Other Equity",
+            "isin": "",
+            "sector": "",
+            "weight": 27.28
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "isin": "",
+            "sector": "Mutual Fund Units",
+            "weight": 15.25
+          },
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 5.73
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 5.56
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 4.97
+          },
+          {
+            "name": "Reliance Industries Limited",
+            "isin": "",
+            "sector": "Petroleum Products",
+            "weight": 4.74
+          },
+          {
+            "name": "Bharti Airtel Limited",
+            "isin": "",
+            "sector": "Telecom - Services",
+            "weight": 4.43
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "sector": "Banks",
+            "weight": 3.9
+          },
+          {
+            "name": "Bharat Heavy Electricals Limited",
+            "isin": "",
+            "sector": "Electrical Equipment",
+            "weight": 3.28
+          },
+          {
+            "name": "Mahindra & Mahindra Limited",
+            "isin": "",
+            "sector": "Automobiles",
+            "weight": 2.76
+          }
+        ],
+        "holdings": [
+          {
+            "name": "ICICI Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 5.73,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 5.56,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 4.97,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reliance Industries Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Petroleum Products",
+            "weight": 4.74,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bharti Airtel Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Telecom - Services",
+            "weight": 4.43,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Mahindra Bank Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 3.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bharat Heavy Electricals Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Electrical Equipment",
+            "weight": 3.28,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Mahindra & Mahindra Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Automobiles",
+            "weight": 2.76,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Tata Steel Limited",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Ferrous Metals",
+            "weight": 2.38,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "State Bank of India",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "Banks",
+            "weight": 2.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Other Equity",
+            "isin": "",
+            "instrument_type": "equity",
+            "sector": "",
+            "weight": 27.28,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CAREA1+",
+            "weight": 1.98,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 1.96,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Canara Bank",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 1.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 1.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 1.89,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 1.88,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 0.98,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "IND A1+",
+            "weight": 0.96,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "ICICI Securities Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.99,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bajaj Finance Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.99,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.38,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+            "isin": "",
+            "instrument_type": "fund",
+            "sector": "Mutual Fund Units",
+            "weight": 15.25,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reverse Repo / TREPS and Other Receivables and Payables Debt and",
+            "isin": "",
+            "instrument_type": "treps",
+            "sector": "Money Market Instruments",
+            "weight": 1.84,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    },
+    {
+      "amfi_code": "143269",
+      "amc_slug": "ppfas",
+      "year": 2026,
+      "month": 5,
+      "period": "2026-05",
+      "as_of_date": "2026-05-31",
+      "source_org": "PPFAS Mutual Fund",
+      "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+      "raw_file_key": null,
+      "data": {
+        "amfi_code": "143269",
+        "scheme_name": "Parag Parikh Liquid Fund - Direct Plan - Growth",
+        "amc_name": "PPFAS Mutual Fund",
+        "category": "Debt - Liquid Fund",
+        "isin": "INF879O01068",
+        "asset_class": "debt",
+        "period": "2026-05",
+        "period_label": "May 2026",
+        "as_of_date": "2026-05-31",
+        "source_org": "PPFAS Mutual Fund",
+        "source_url": "https://amc.ppfas.com/downloads/factsheet/2026/",
+        "aum": 5523.65,
+        "nav": null,
+        "expense_ratio": null,
+        "holdings_count": 48,
+        "total_weight": 100.0,
+        "deployable_cash": 85.15,
+        "asset_allocation": [
+          {
+            "name": "Debt",
+            "weight": 100.0
+          }
+        ],
+        "category_breakdown": [
+          {
+            "name": "CRISILA1+",
+            "weight": 56.43
+          },
+          {
+            "name": "Sovereign",
+            "weight": 20.85
+          },
+          {
+            "name": "ICRAA1+",
+            "weight": 6.76
+          },
+          {
+            "name": "IND",
+            "weight": 6.3
+          },
+          {
+            "name": "(04/08/2026) IND",
+            "weight": 3.58
+          },
+          {
+            "name": "CAREA1+",
+            "weight": 2.71
+          },
+          {
+            "name": "Debt and Money Market Instruments",
+            "weight": 1.77
+          },
+          {
+            "name": "CRISILAAA",
+            "weight": 0.91
+          }
+        ],
+        "market_cap_breakdown": [],
+        "cash_breakdown": [
+          {
+            "section": "Cash & Money Market",
+            "weight": 85.15
+          }
+        ],
+        "top_holdings": [
+          {
+            "name": "91 Days Tbill",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 5.39
+          },
+          {
+            "name": "182 Days Tbill",
+            "isin": "",
+            "sector": "Sovereign",
+            "weight": 4.77
+          },
+          {
+            "name": "Punjab National Bank",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 4.52
+          },
+          {
+            "name": "Bajaj Finance Limited",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 4.51
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 4.51
+          },
+          {
+            "name": "Canara Bank",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 4.46
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 4.07
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "sector": "IND",
+            "weight": 4.06
+          },
+          {
+            "name": "Tata Capital Limited",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 4.0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "sector": "CRISILA1+",
+            "weight": 3.62
+          }
+        ],
+        "holdings": [
+          {
+            "name": "91 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 5.39,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "182 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 4.77,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "91 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 3.13,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "182 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 2.79,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "91 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 1.8,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "91 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.89,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "364 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.54,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "182 Days Tbill",
+            "isin": "",
+            "instrument_type": "tbill",
+            "sector": "Sovereign",
+            "weight": 0.27,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.63% GOI (MD17/06/2059)-Strips (C)-",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 0.81,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "6.80% GOI (MD15/12/2060)-Strips (C)-",
+            "isin": "",
+            "instrument_type": "gsec",
+            "sector": "Sovereign",
+            "weight": 0.46,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "7.4% National Housing Bank Ltd NCD",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "CRISILAAA",
+            "weight": 0.91,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bajaj Finance Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 4.51,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 4.51,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Tata Capital Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 4.0,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 3.62,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Financing Infrastructure And Development",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "(04/08/2026) IND",
+            "weight": 3.58,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Small Industries Development Bank of India",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 3.14,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 2.71,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Kotak Securities Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 2.67,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Export Import Bank of India",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 1.78,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Securities Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 1.78,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "National Bank For Agriculture and Rural Development",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 1.35,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Tata Capital Limited",
+            "isin": "",
+            "instrument_type": "cp",
+            "sector": "CRISILA1+",
+            "weight": 0.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Punjab National Bank",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 4.52,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Canara Bank",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 4.46,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 4.07,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "IND",
+            "weight": 4.06,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "ICRAA1+",
+            "weight": 2.71,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Punjab National Bank",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 2.71,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CRISILA1+",
+            "weight": 2.67,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "CAREA1+",
+            "weight": 2.26,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "cd",
+            "sector": "IND",
+            "weight": 2.24,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Canara Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 1.81,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 1.81,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 1.35,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 1.35,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Indian Bank",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.9,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.89,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CAREA1+",
+            "weight": 0.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "HDFC Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Union Bank of India",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "ICRAA1+",
+            "weight": 0.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Bank of Baroda",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "IND A1+",
+            "weight": 0.45,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Axis Bank Limited",
+            "isin": "",
+            "instrument_type": "debt",
+            "sector": "CRISILA1+",
+            "weight": 0.27,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Corporate Debt Market Development Fund - Class A2 Units",
+            "isin": "",
+            "instrument_type": "corporate_debt",
+            "sector": "Corporate Debt Market Development Fund - Class A2 Units",
+            "weight": 0.24,
+            "market_value": 0,
+            "quantity": 0
+          },
+          {
+            "name": "Reverse Repo / TREPS and Other Receivables and Payables",
+            "isin": "",
+            "instrument_type": "treps",
+            "sector": "Debt and Money Market Instruments",
+            "weight": 1.77,
+            "market_value": 0,
+            "quantity": 0
+          }
+        ]
+      }
+    }
+  ]
+}
