@@ -103,7 +103,7 @@ def num(v):
         return None
 
 
-def classify_instrument(section_label, has_industry_col):
+def classify_instrument(section_label, has_industry_col, row_name=""):
     # Try the section label against the known instrument-type patterns FIRST — a table can
     # have has_industry_col=True (equity's own header) yet later contain a REIT/T-Bill/TREPS
     # sub-section further down the same table (PPFAS packs multiple instrument blocks into
@@ -112,9 +112,26 @@ def classify_instrument(section_label, has_industry_col):
         for pat, kind in SECTION_TYPE_MAP:
             if pat.search(section_label):
                 return kind
-    if has_industry_col:
-        return "equity"
-    return "debt"
+    # A row can BE its own section marker with a weight already attached (e.g. the image
+    # rescue path fuses "Government securities/State Development Loans (SDLs)" together
+    # with the first bond's weight into one row) — section_label above never gets set from
+    # a row that already looks like data, so also try the row's own name directly.
+    if row_name:
+        for pat, kind in SECTION_TYPE_MAP:
+            if pat.search(row_name):
+                return kind
+    # Row-level content beats a table-WIDE header guess — a single table can mix an equity
+    # block with a trailing debt/REIT block with no section-label row of its own between
+    # them (Flexi Cap Fund's "Core Equity" table does exactly this). Debt/NCD/SDL/CD/CP
+    # names almost always carry a maturity date "(DD/MM/YYYY)" or a leading coupon rate
+    # ("7.49%..."); equity names essentially never do.
+    if row_name and (DATE_SUFFIX_RE.search(row_name) or re.match(r"^\d+(\.\d+)?\s*%", row_name)):
+        return "debt"
+    # Anything reaching here has no section-label hint AND doesn't look debt-shaped by
+    # name — in this factsheet format that's overwhelmingly an equity holding (debt/CD/CP/
+    # TREPS/mutual-fund-unit rows always carry a coupon/date OR sit under an explicit
+    # section-label row, both handled above).
+    return "equity"
 
 
 def parse_holdings_table(grid):
@@ -135,7 +152,7 @@ def parse_holdings_table(grid):
 
     def emit(name_, mid_, weight_, wrapped_tail_):
         clean_name = DATE_SUFFIX_RE.sub("", name_).strip()
-        instrument_type = classify_instrument(section_label, has_industry_col)
+        instrument_type = classify_instrument(section_label, has_industry_col, name_)
         sector_or_rating = " ".join(x for x in (mid_, wrapped_tail_) if x).strip() or (section_label or "")
         holdings.append({
             "name": clean_name, "isin": "", "industry": sector_or_rating,
