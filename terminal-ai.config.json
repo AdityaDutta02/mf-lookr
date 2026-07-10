@@ -1,0 +1,12 @@
+{
+  "app_name": "MF Lookr",
+  "framework": "nextjs",
+  "gateway_version": "2",
+  "health_check_path": "/api/health",
+  "port": 3000,
+  "requires_file_upload": false,
+  "generates_artifacts": false,
+  "model_tier": "standard",
+  "category": "chat",
+  "tier": "good"
+}
