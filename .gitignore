@@ -32,3 +32,4 @@ Thumbs.db
 tools/cache/
 tools/out/
 tools/.venv/
+tools/__pycache__/
