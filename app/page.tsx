@@ -20,8 +20,25 @@ async function api<T>(path: string, token: string, init?: RequestInit): Promise<
   return res.json() as Promise<T>;
 }
 
+// Each entry needs a deployed app/api/admin/seed-<slug>/route.ts + bundled
+// data.json (built by tools/build_dataset_<slug>.py) — this list only grows
+// as each fund house's local parse-and-verify pass is done, never before.
+const SEED_TARGETS = [
+  { slug: 'ppfas', label: 'PPFAS' },
+  { slug: 'hdfc', label: 'HDFC' },
+  { slug: 'invesco', label: 'Invesco' },
+  { slug: 'nippon', label: 'Nippon India' },
+  { slug: 'helios', label: 'Helios' },
+  { slug: 'mirae', label: 'Mirae Asset' },
+  { slug: 'motilal', label: 'Motilal Oswal' },
+  { slug: 'navi', label: 'Navi' },
+  { slug: 'sbi', label: 'SBI' },
+  { slug: 'icici', label: 'ICICI Prudential' },
+];
+
 function PageBody() {
   const { fund, period, token } = useFund();
+  const [seedTarget, setSeedTarget] = useState(SEED_TARGETS[1].slug); // default to HDFC — PPFAS is already loaded
   const [seeding, setSeeding] = useState(false);
   const [seedStatus, setSeedStatus] = useState<string | null>(null);
 
@@ -36,12 +53,12 @@ function PageBody() {
     try {
       // window.alert() is silently swallowed inside the embedded viewer iframe
       // (no "allow-modals" permission) — surface the result in-page instead.
-      const res = await api<Record<string, { inserted: number; errors: unknown[] }>>('/api/admin/seed-ppfas', token, {
+      const res = await api<Record<string, { inserted: number; errors: unknown[] }>>(`/api/admin/seed-${seedTarget}`, token, {
         method: 'POST',
       });
-      setSeedStatus(`Seeded: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted ?? v}`).join(', ')}`);
+      setSeedStatus(`Seeded ${seedTarget}: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted ?? v}`).join(', ')}`);
     } catch (e) {
-      setSeedStatus(`Seed failed: ${(e as Error).message}`);
+      setSeedStatus(`Seed failed (${seedTarget}): ${(e as Error).message}`);
     } finally {
       setSeeding(false);
     }
@@ -49,7 +66,14 @@ function PageBody() {
 
   return (
     <div className="min-h-[100dvh] flex flex-col">
-      <FundContextBar seeding={seeding} seedStatus={seedStatus} onSeed={seed} />
+      <FundContextBar
+        seedTargets={SEED_TARGETS}
+        seedTarget={seedTarget}
+        onSeedTargetChange={setSeedTarget}
+        seeding={seeding}
+        seedStatus={seedStatus}
+        onSeed={seed}
+      />
       <main className="flex-1 max-w-screen-2xl mx-auto w-full px-4 sm:px-6 py-6">
         {fund && period ? <AnalyseContent /> : <SearchView />}
       </main>

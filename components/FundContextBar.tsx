@@ -98,10 +98,16 @@ function FundSwitcher() {
 }
 
 export function FundContextBar({
+  seedTargets,
+  seedTarget,
+  onSeedTargetChange,
   seeding,
   seedStatus,
   onSeed,
 }: {
+  seedTargets: { slug: string; label: string }[];
+  seedTarget: string;
+  onSeedTargetChange: (slug: string) => void;
   seeding: boolean;
   seedStatus: string | null;
   onSeed: () => void;
@@ -114,13 +120,26 @@ export function FundContextBar({
         <FundSwitcher />
         {fund && <PeriodPicker fund={fund} period={period} onSelect={selectPeriod} token={token} />}
         <div className="flex-1" />
+        <select
+          value={seedTarget}
+          onChange={(e) => onSeedTargetChange(e.target.value)}
+          disabled={seeding}
+          className="text-[10px] font-mono tracking-meta uppercase px-2 py-1.5 border border-line-subtle rounded-sm bg-card text-fg-secondary disabled:opacity-50 shrink-0"
+          data-testid="seed-target-select"
+        >
+          {seedTargets.map((t) => (
+            <option key={t.slug} value={t.slug}>
+              {t.label}
+            </option>
+          ))}
+        </select>
         <button
           onClick={onSeed}
           disabled={seeding}
           className="text-[10px] font-mono tracking-meta uppercase px-2.5 py-1.5 border border-line-subtle rounded-sm text-fg-secondary hover:bg-subtle disabled:opacity-50 shrink-0"
-          data-testid="seed-ppfas-button"
+          data-testid="seed-button"
         >
-          {seeding ? 'Seeding…' : 'Seed PPFAS (admin)'}
+          {seeding ? 'Seeding…' : 'Seed (admin)'}
         </button>
       </div>
       {seedStatus && (
