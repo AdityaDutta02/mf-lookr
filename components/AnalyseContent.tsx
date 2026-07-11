@@ -28,6 +28,11 @@ const fmtNav = (n: number | null) =>
   n == null ? '—' : '₹' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const fmtPct = (n: number | null) => (n == null ? '—' : n.toFixed(2) + '%');
 
+interface LiveNav {
+  nav: number;
+  date: string; // "DD-Mon-YYYY", as published by AMFI
+}
+
 function donutMeta(asset: string) {
   if (asset === 'equity')
     return {
@@ -79,6 +84,7 @@ export function AnalyseContent() {
   const [error, setError] = useState<string | null>(null);
   const [aiStatus, setAiStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [aiError, setAiError] = useState<string | null>(null);
+  const [liveNav, setLiveNav] = useState<LiveNav | null>(null);
 
   function loadAI(fundCode: string, periodVal: string, tok: string) {
     setAiStatus('loading');
@@ -116,6 +122,25 @@ export function AnalyseContent() {
         setError(e.message);
       });
   }, [fund?.amfi_code, period, token]);
+
+  // Live NAV is decoupled from the browsed period on purpose — it's today's
+  // price, not "the price as of whichever month's holdings you're looking
+  // at." Fetched once per fund (not on period change) from AMFI's daily feed.
+  useEffect(() => {
+    if (!fund) {
+      setLiveNav(null);
+      return;
+    }
+    setLiveNav(null);
+    fetch(`/api/nav?fund=${fund.amfi_code}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((d) => {
+        if (d && typeof d.nav === 'number') setLiveNav({ nav: d.nav, date: d.date });
+      })
+      .catch(() => {
+        /* live NAV is supplementary — the rest of the page doesn't depend on it */
+      });
+  }, [fund?.amfi_code]);
 
   if (!fund || !period) {
     return (
@@ -165,7 +190,7 @@ export function AnalyseContent() {
 
       <section className="pt-8 sm:pt-9">
         <SectionLabel>Key Metrics</SectionLabel>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6" data-testid="kpi-grid">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6" data-testid="kpi-grid">
           <KpiTile
             label="AUM"
             value={d.aum != null ? `${fmtCr(d.aum)} Cr` : '—'}
@@ -174,15 +199,10 @@ export function AnalyseContent() {
           />
           <KpiTile
             label="NAV"
-            value={fmtNav(d.nav)}
-            hint={`as of ${d.period_label}`}
-            tooltip="Net Asset Value — the price of one unit of the fund."
-          />
-          <KpiTile
-            label="Expense Ratio"
-            value={fmtPct(d.expense_ratio)}
-            hint="Annual, regular plan"
-            tooltip="The annual fee you pay, as a % of your investment, for the fund to manage your money."
+            value={liveNav ? fmtNav(liveNav.nav) : '—'}
+            hint={liveNav ? `live, as of ${liveNav.date}` : 'fetching live price…'}
+            tooltip="Net Asset Value — the price of one unit of the fund, right now (not tied to the month you're browsing below)."
+            accent
           />
           <KpiTile
             label="Holdings"
