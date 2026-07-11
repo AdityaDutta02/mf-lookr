@@ -113,3 +113,15 @@ export interface ChangesData {
   changes: { added: ChangeRow[]; exited: ChangeRow[]; increased: ChangeRow[]; reduced: ChangeRow[] } | null;
   category_drift: WeightItem[] | null;
 }
+
+// Additive — search UI + /api/search contract. Never remove/rename existing
+// fields above; only append here.
+export interface SchemeMatch {
+  amfi_code: string;
+  scheme_name: string;
+  amc_name: string;
+  amc_slug: string;
+  category: string;
+  asset_class: AssetClass;
+}
+export type SearchResult = { type: "empty" } | { type: "name"; schemes: SchemeMatch[] };

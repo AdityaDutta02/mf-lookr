@@ -1,82 +1,45 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useEmbedToken } from "@/hooks/use-embed-token";
-import type { AmcSummary, FundSummary, AnalyseData, ChangesData } from "@/lib/types";
+'use client';
 
-type View =
-  | { kind: "amcs" }
-  | { kind: "funds"; amc: string }
-  | { kind: "periods"; amc: string; fund: FundSummary }
-  | { kind: "fund"; amc: string; fund: FundSummary; period: string };
+// Thin composing shell — the monolithic version of this file (raw fetches to
+// /api/amcs, /api/funds, /api/periods, /api/changes, /api/admin/seed-ppfas
+// inline, no components/ directory) has been replaced by the ported/rebuilt
+// component set. FundContextBar is docked at top; below it is either
+// SearchView (home screen — no fund+period selected yet) or the full analyse
+// content once a fund+period is selected, mirroring mf-analyser's
+// AnalyseView.tsx layout.
+import { useState } from 'react';
+import { FundProvider, useFund } from '@/components/FundProvider';
+import { FundContextBar } from '@/components/FundContextBar';
+import { SearchView } from '@/components/SearchView';
+import { AnalyseContent } from '@/components/AnalyseContent';
+import { Footer } from '@/components/Footer';
 
 async function api<T>(path: string, token: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(path, { ...init, headers: { ...(init?.headers ?? {}), "x-embed-token": token } });
+  const res = await fetch(path, { ...init, headers: { ...(init?.headers ?? {}), 'x-embed-token': token } });
   if (!res.ok) throw new Error((await res.json().catch(() => ({ error: res.statusText }))).error ?? res.statusText);
   return res.json() as Promise<T>;
 }
 
-function pct(n: number | null | undefined) {
-  return n == null ? "—" : `${n.toFixed(2)}%`;
-}
-
-export default function HomePage() {
-  const token = useEmbedToken();
-  const [view, setView] = useState<View>({ kind: "amcs" });
-  const [amcs, setAmcs] = useState<AmcSummary[] | null>(null);
-  const [funds, setFunds] = useState<FundSummary[] | null>(null);
-  const [periods, setPeriods] = useState<{ period: string }[] | null>(null);
-  const [data, setData] = useState<ChangesData | null>(null);
+function PageBody() {
+  const { fund, period, token } = useFund();
   const [seeding, setSeeding] = useState(false);
   const [seedStatus, setSeedStatus] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [refreshTick, setRefreshTick] = useState(0);
 
-  useEffect(() => {
-    if (!token || view.kind !== "amcs") return;
-    setError(null);
-    api<AmcSummary[]>("/api/amcs", token).then(setAmcs).catch((e) => setError(String(e.message ?? e)));
-  }, [token, view.kind, refreshTick]);
-
-  useEffect(() => {
-    if (!token || view.kind !== "funds") return;
-    setError(null);
-    api<FundSummary[]>(`/api/funds?amc=${view.amc}`, token).then(setFunds).catch((e) => setError(String(e.message ?? e)));
-  }, [token, view]);
-
-  useEffect(() => {
-    if (!token || view.kind !== "periods") return;
-    setError(null);
-    api<{ period: string }[]>(`/api/periods?fund=${view.fund.amfi_code}`, token)
-      .then(setPeriods)
-      .catch((e) => setError(String(e.message ?? e)));
-  }, [token, view]);
-
-  useEffect(() => {
-    if (!token || view.kind !== "fund") return;
-    setError(null);
-    setData(null);
-    api<ChangesData>(`/api/changes?fund=${view.fund.amfi_code}&period=${view.period}`, token)
-      .then(setData)
-      .catch((e) => setError(String(e.message ?? e)));
-  }, [token, view]);
+  if (!token) {
+    return <main className="min-h-[100dvh] flex items-center justify-center text-fg-secondary text-sm">Connecting…</main>;
+  }
 
   async function seed() {
     if (!token) return;
     setSeeding(true);
     setSeedStatus(null);
     try {
-      // window.alert() is silently swallowed inside the embedded viewer iframe (no
-      // "allow-modals" permission) — surface the result in-page instead, or a
-      // successful seed looks indistinguishable from a no-op click.
-      const res = await api<Record<string, { inserted: number; errors: unknown[] }>>(
-        "/api/admin/seed-ppfas",
-        token,
-        { method: "POST" },
-      );
-      setSeedStatus(`Seeded: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted}`).join(", ")}`);
-      setAmcs(null);
-      setView({ kind: "amcs" });
-      setRefreshTick((t) => t + 1);
+      // window.alert() is silently swallowed inside the embedded viewer iframe
+      // (no "allow-modals" permission) — surface the result in-page instead.
+      const res = await api<Record<string, { inserted: number; errors: unknown[] }>>('/api/admin/seed-ppfas', token, {
+        method: 'POST',
+      });
+      setSeedStatus(`Seeded: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted ?? v}`).join(', ')}`);
     } catch (e) {
       setSeedStatus(`Seed failed: ${(e as Error).message}`);
     } finally {
@@ -84,221 +47,21 @@ export default function HomePage() {
     }
   }
 
-  if (!token) {
-    return <main className="min-h-[100dvh] flex items-center justify-center text-fg-secondary text-sm">Connecting…</main>;
-  }
-
   return (
-    <main className="min-h-[100dvh] max-w-screen-2xl mx-auto px-4 py-6">
-      <header className="flex items-center justify-between mb-6">
-        <div>
-          <div className="text-xs tracking-wide2 uppercase text-fg-secondary">MF Lookr</div>
-          <h1 className="text-xl font-semibold text-fg-primary">Fund house → fund → year → month</h1>
-        </div>
-        <button
-          onClick={seed}
-          disabled={seeding}
-          className="text-xs px-3 py-2 border border-line-default rounded-sm hover:bg-subtle disabled:opacity-50"
-        >
-          {seeding ? "Seeding…" : "Seed PPFAS (admin)"}
-        </button>
-      </header>
-
-      {seedStatus && (
-        <div
-          className={`mb-4 text-sm rounded-sm p-3 border ${
-            seedStatus.startsWith("Seed failed")
-              ? "text-error bg-tint-error border-tint-error-border"
-              : "text-success bg-tint-success border-tint-info-border"
-          }`}
-        >
-          {seedStatus}
-        </div>
-      )}
-      {error && <div className="mb-4 text-sm text-error bg-tint-error border border-tint-error-border rounded-sm p-3">{error}</div>}
-
-      <nav className="text-xs text-fg-secondary mb-4 flex gap-2 items-center">
-        <button className="hover:text-fg-link" onClick={() => setView({ kind: "amcs" })}>Fund houses</button>
-        {view.kind !== "amcs" && <span>/</span>}
-        {"amc" in view && (
-          <button className="hover:text-fg-link" onClick={() => setView({ kind: "funds", amc: view.amc })}>{view.amc}</button>
-        )}
-        {"fund" in view && <span>/ {view.fund.scheme_name}</span>}
-        {view.kind === "fund" && <span>/ {view.period}</span>}
-      </nav>
-
-      {view.kind === "amcs" && (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-          {(amcs ?? []).map((a) => (
-            <li key={a.slug}>
-              <button
-                className="w-full text-left border border-line-default rounded-sm p-4 hover:border-line-focus"
-                onClick={() => setView({ kind: "funds", amc: a.slug })}
-              >
-                <div className="font-medium text-fg-primary">{a.name}</div>
-                <div className="text-xs text-fg-secondary mt-1">{a.fund_count} funds · {a.status}</div>
-              </button>
-            </li>
-          ))}
-          {amcs && amcs.length === 0 && <li className="text-sm text-fg-secondary">No fund houses loaded yet — use "Seed PPFAS" above.</li>}
-        </ul>
-      )}
-
-      {view.kind === "funds" && (
-        <ul className="flex flex-col gap-2">
-          {(funds ?? []).map((f) => (
-            <li key={f.amfi_code}>
-              <button
-                className="w-full text-left border border-line-default rounded-sm p-3 hover:border-line-focus flex justify-between items-center"
-                onClick={() => setView({ kind: "periods", amc: view.amc, fund: f })}
-              >
-                <span className="text-fg-primary text-sm">{f.scheme_name}</span>
-                <span className="text-xs text-fg-secondary">{f.category}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {view.kind === "periods" && (
-        <ul className="flex flex-wrap gap-2">
-          {(periods ?? []).map((p) => (
-            <li key={p.period}>
-              <button
-                className="border border-line-default rounded-sm px-3 py-2 text-sm hover:border-line-focus"
-                onClick={() => setView({ kind: "fund", amc: view.amc, fund: view.fund, period: p.period })}
-              >
-                {p.period}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {view.kind === "fund" && data && (
-        <div className="flex flex-col gap-5">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <Kpi label="AUM (₹ cr)" value={data.current.aum?.toLocaleString() ?? "—"} />
-            <Kpi label="Holdings" value={String(data.current.holdings_count)} />
-            <Kpi label="Deployable cash" value={pct(data.current.deployable_cash)} />
-            <Kpi label="Total weight" value={pct(data.current.total_weight)} />
-          </div>
-
-          <section>
-            <h2 className="text-xs tracking-wide2 uppercase text-fg-secondary mb-2">Asset allocation</h2>
-            <div className="flex gap-2 flex-wrap">
-              {data.current.asset_allocation.map((a) => (
-                <div key={a.name} className="border border-line-subtle rounded-sm px-3 py-2 text-sm">
-                  {a.name}: <span className="font-medium">{pct(a.weight)}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xs tracking-wide2 uppercase text-fg-secondary mb-2">Top holdings</h2>
-            <table className="w-full text-sm">
-              <tbody>
-                {data.current.top_holdings.map((h) => (
-                  <tr key={h.name} className="border-b border-line-subtle">
-                    <td className="py-1.5 pr-3">{h.name}</td>
-                    <td className="py-1.5 pr-3 text-fg-secondary">{h.sector}</td>
-                    <td className="py-1.5 text-right font-mono">{pct(h.weight)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
-
-          {data.previous ? (
-            <section>
-              <h2 className="text-xs tracking-wide2 uppercase text-fg-secondary mb-2">
-                Changes vs {data.previous.period}
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-3">
-                <Kpi label="Cash Δ" value={pct(data.kpis?.cash_delta)} />
-                <Kpi label="Equity Δ" value={pct(data.kpis?.equity_delta)} />
-                <Kpi label="Count Δ" value={String(data.kpis?.count_delta ?? "—")} />
-                <Kpi label="AUM Δ (₹cr)" value={data.kpis?.aum_delta?.toLocaleString() ?? "—"} />
-              </div>
-              <ChangeList title="Added" rows={data.changes?.added ?? []} />
-              <ChangeList title="Exited" rows={data.changes?.exited ?? []} />
-              <ChangeList title="Increased" rows={data.changes?.increased ?? []} />
-              <ChangeList title="Reduced" rows={data.changes?.reduced ?? []} />
-            </section>
-          ) : (
-            <div className="text-sm text-fg-secondary">No prior month stored yet for this fund — changes will show once a second month is loaded.</div>
-          )}
-
-          <section>
-            <h2 className="text-xs tracking-wide2 uppercase text-fg-secondary mb-2">
-              All holdings ({data.current.holdings.length})
-            </h2>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-left text-xs text-fg-secondary border-b border-line-default">
-                  <th className="py-1.5 font-normal">Name</th>
-                  <th className="py-1.5 font-normal">Type</th>
-                  <th className="py-1.5 font-normal">Sector / rating</th>
-                  <th className="py-1.5 font-normal text-right">Quantity</th>
-                  <th className="py-1.5 font-normal text-right">Weight</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...data.current.holdings].sort((a, b) => b.weight - a.weight).map((h, i) => (
-                  <tr key={`${h.name}-${i}`} className="border-b border-line-subtle">
-                    <td className="py-1.5 pr-3">{h.name}</td>
-                    <td className="py-1.5 pr-3 text-fg-secondary">{h.instrument_type}</td>
-                    <td className="py-1.5 pr-3 text-fg-secondary">{h.sector}</td>
-                    <td className="py-1.5 text-right font-mono text-fg-secondary">
-                      {h.quantity ? Math.round(h.quantity).toLocaleString() : "—"}
-                    </td>
-                    <td className="py-1.5 text-right font-mono">{pct(h.weight)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </section>
-        </div>
-      )}
-    </main>
-  );
-}
-
-function Kpi({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border border-line-subtle rounded-sm p-3">
-      <div className="text-xs text-fg-secondary">{label}</div>
-      <div className="text-lg font-semibold text-fg-primary font-mono">{value}</div>
+    <div className="min-h-[100dvh] flex flex-col">
+      <FundContextBar seeding={seeding} seedStatus={seedStatus} onSeed={seed} />
+      <main className="flex-1 max-w-screen-2xl mx-auto w-full px-4 sm:px-6 py-6">
+        {fund && period ? <AnalyseContent /> : <SearchView />}
+      </main>
+      <Footer />
     </div>
   );
 }
 
-// Per-goal directive: show quantity change only — never the weight/NAV-value delta,
-// which reflects price movement rather than an actual position change.
-function ChangeList({ title, rows }: { title: string; rows: import("@/lib/types").ChangeRow[] }) {
-  if (rows.length === 0) return null;
+export default function HomePage() {
   return (
-    <div className="mb-3">
-      <div className="text-xs font-medium text-fg-secondary mb-1">{title} ({rows.length})</div>
-      <ul className="text-sm flex flex-col gap-0.5">
-        {rows.slice(0, 15).map((r) => (
-          <li key={r.name} className="flex justify-between items-baseline border-b border-line-subtle py-1 gap-3">
-            <span className="truncate">{r.name}</span>
-            {r.quantity_delta != null ? (
-              <span
-                className={`font-mono shrink-0 ${r.quantity_delta >= 0 ? "text-success" : "text-error"}`}
-                title={`${Math.round(r.quantity_delta).toLocaleString()} units`}
-              >
-                {r.quantity_delta >= 0 ? "+" : ""}
-                {r.quantity_delta_pct != null ? `${r.quantity_delta_pct.toFixed(1)}%` : Math.round(r.quantity_delta).toLocaleString()}
-              </span>
-            ) : (
-              <span className="text-xs text-fg-secondary shrink-0">quantity not disclosed</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <FundProvider>
+      <PageBody />
+    </FundProvider>
   );
 }
