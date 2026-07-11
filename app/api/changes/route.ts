@@ -51,12 +51,25 @@ function diffHoldings(a: AnalyseData, b: AnalyseData) {
         name: hb.name, isin: hb.isin, weight_a: 0, weight_b: hb.weight, delta: round2(hb.weight),
         ...quantityFields(undefined, hb.quantity),
       });
+      continue;
+    }
+    const delta = round2(hb.weight - ha.weight);
+    const qf = quantityFields(ha.quantity, hb.quantity);
+    const row = { name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta, ...qf };
+    // A position's weight drifts every month purely from price movement even when the
+    // manager touched nothing — e.g. HDFC Bank's share count can be byte-for-byte
+    // identical between two months while its NAV weight moves >0.4% just because the
+    // stock re-rated. Bucketing that as "Increased" reads as manager activity when it
+    // isn't. So: when BOTH months disclose quantity for this holding, "did the position
+    // change" means "did the share count change" — bucket by quantity_delta, not weight
+    // delta, and drop it from the list entirely when quantity is unchanged (nothing to
+    // report). Only fall back to weight-delta bucketing when quantity isn't disclosed on
+    // one/both sides (cash-like entries such as TREPS or Net Receivables/Payables).
+    if (qf.quantity_a != null && qf.quantity_b != null) {
+      if (qf.quantity_delta! > 0) increased.push(row);
+      else if (qf.quantity_delta! < 0) reduced.push(row);
+      // quantity_delta === 0 -> real weight drift from price, not a position change; omit.
     } else {
-      const delta = round2(hb.weight - ha.weight);
-      const row = {
-        name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta,
-        ...quantityFields(ha.quantity, hb.quantity),
-      };
       if (delta > 0.01) increased.push(row);
       else if (delta < -0.01) reduced.push(row);
     }
@@ -69,12 +82,13 @@ function diffHoldings(a: AnalyseData, b: AnalyseData) {
       });
     }
   }
-  const byAbs = (x: ChangeRow, y: ChangeRow) => Math.abs(y.delta) - Math.abs(x.delta);
+  const magnitude = (r: ChangeRow) => Math.abs(r.quantity_delta_pct ?? r.delta);
+  const byMagnitude = (x: ChangeRow, y: ChangeRow) => magnitude(y) - magnitude(x);
   return {
-    added: added.sort(byAbs),
-    exited: exited.sort(byAbs),
-    increased: increased.sort(byAbs),
-    reduced: reduced.sort(byAbs),
+    added: added.sort(byMagnitude),
+    exited: exited.sort(byMagnitude),
+    increased: increased.sort(byMagnitude),
+    reduced: reduced.sort(byMagnitude),
   };
 }
 

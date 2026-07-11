@@ -2,13 +2,13 @@
 // tools/build_dataset.py from the local extraction toolkit — see tools/README.md)
 // into amcs/funds/disclosures via the gateway.
 //
-// disclosures are REPLACED (delete-then-insert) for any (amfi_code, period) this
-// bundle covers, not just inserted — a re-run must be able to overwrite stale data
-// (e.g. this app's first seed used the factsheet-PDF parser, which has no ISIN/
-// quantity; re-seeding from the XLS parser needs to actually replace those rows,
-// not silently no-op on the unique constraint). amcs/funds are stable identity
-// data — plain dbBulkInsert is fine there, a unique_violation on re-run means
-// "already correct."
+// disclosures are fully SCRUBBED (delete every existing ppfas row, then insert fresh)
+// on every run, not just replaced for the periods this bundle happens to cover. A
+// partial "only delete matching keys" replace was tried first and left room for stale
+// rows to survive a re-run (e.g. from an earlier bundle that covered different
+// periods, or a parser change that renamed a fund) — full scrub removes that risk
+// entirely. amcs/funds are stable identity data — plain dbBulkInsert is fine there,
+// a unique_violation on re-run means "already correct."
 import { NextRequest, NextResponse } from "next/server";
 import { dbBulkInsert, dbDelete, dbList } from "@/lib/db";
 import bundle from "./data.json";
@@ -30,10 +30,8 @@ export async function POST(req: NextRequest) {
     const amcResult = await dbBulkInsert("amcs", bundle.amcs, token);
     const fundResult = await dbBulkInsert("funds", bundle.funds, token);
 
-    const targetKeys = new Set(bundle.disclosures.map((d) => `${d.amfi_code}|${d.period}`));
     const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: "ppfas" }, token);
-    const toDelete = existing.filter((r) => targetKeys.has(`${r.amfi_code}|${r.period}`));
-    for (const row of toDelete) {
+    for (const row of existing) {
       await dbDelete("disclosures", row.id, token);
     }
 
@@ -42,7 +40,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       amcs: { inserted: amcResult.inserted.length, errors: amcResult.errors },
       funds: { inserted: fundResult.inserted.length, errors: fundResult.errors },
-      disclosures_replaced: toDelete.length,
+      disclosures_scrubbed: existing.length,
       disclosures: { inserted: disclosureResult.inserted.length, errors: disclosureResult.errors },
     });
   } catch (e) {
