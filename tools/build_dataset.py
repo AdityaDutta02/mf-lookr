@@ -71,7 +71,10 @@ def asset_allocation(holdings):
 def category_breakdown(holdings, top_n=8):
     agg = {}
     for h in holdings:
-        key = (h.get("industry") or "Unclassified").strip() or "Unclassified"
+        # xlrd can hand back a numeric cell (e.g. an empty/stray rating cell) instead of
+        # a string for "industry" — coerce before stripping.
+        raw = h.get("industry")
+        key = (str(raw).strip() if raw else "") or "Unclassified"
         agg[key] = agg.get(key, 0.0) + h["weight"]
     rows = sorted(({"name": k, "weight": round(v, 2)} for k, v in agg.items()), key=lambda r: -r["weight"])
     return rows[:top_n]
@@ -110,13 +113,13 @@ def build_disclosure(canonical_name, period, bucket):
         "market_cap_breakdown": [],
         "cash_breakdown": [{"section": "Cash & Money Market", "weight": deployable_cash}] if deployable_cash else [],
         "top_holdings": [
-            {"name": h["name"], "isin": h["isin"], "sector": h.get("industry", ""), "weight": h["weight"]}
+            {"name": h["name"], "isin": h["isin"], "sector": str(h.get("industry") or ""), "weight": h["weight"]}
             for h in top_holdings
         ],
         "holdings": [
             {
                 "name": h["name"], "isin": h["isin"], "instrument_type": h["type"],
-                "sector": h.get("industry", ""), "weight": h["weight"],
+                "sector": str(h.get("industry") or ""), "weight": h["weight"],
                 "market_value": h.get("market_value_cr") or 0, "quantity": h.get("quantity") or 0,
             }
             for h in holdings

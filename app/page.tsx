@@ -274,6 +274,8 @@ function Kpi({ label, value }: { label: string; value: string }) {
   );
 }
 
+// Per-goal directive: show quantity change only — never the weight/NAV-value delta,
+// which reflects price movement rather than an actual position change.
 function ChangeList({ title, rows }: { title: string; rows: import("@/lib/types").ChangeRow[] }) {
   if (rows.length === 0) return null;
   return (
@@ -283,16 +285,17 @@ function ChangeList({ title, rows }: { title: string; rows: import("@/lib/types"
         {rows.slice(0, 15).map((r) => (
           <li key={r.name} className="flex justify-between items-baseline border-b border-line-subtle py-1 gap-3">
             <span className="truncate">{r.name}</span>
-            <span className="flex items-baseline gap-3 shrink-0">
-              {r.quantity_delta_pct != null && (
-                <span className="text-xs text-fg-secondary font-mono">
-                  qty {r.quantity_delta_pct >= 0 ? "+" : ""}{r.quantity_delta_pct.toFixed(1)}%
-                </span>
-              )}
-              <span className={`font-mono ${r.delta >= 0 ? "text-success" : "text-error"}`}>
-                {r.delta >= 0 ? "+" : ""}{r.delta.toFixed(2)}%
+            {r.quantity_delta != null ? (
+              <span
+                className={`font-mono shrink-0 ${r.quantity_delta >= 0 ? "text-success" : "text-error"}`}
+                title={`${Math.round(r.quantity_delta).toLocaleString()} units`}
+              >
+                {r.quantity_delta >= 0 ? "+" : ""}
+                {r.quantity_delta_pct != null ? `${r.quantity_delta_pct.toFixed(1)}%` : Math.round(r.quantity_delta).toLocaleString()}
               </span>
-            </span>
+            ) : (
+              <span className="text-xs text-fg-secondary shrink-0">quantity not disclosed</span>
+            )}
           </li>
         ))}
       </ul>
