@@ -8,7 +8,10 @@ export function MarketCapBar({ data }: { data: WeightItem[] }) {
   const max = Math.max(...data.map((d) => d.weight), 1);
   return (
     <div className="bg-card border border-line-subtle rounded-sm p-4" data-testid="market-cap-bar">
-      <h3 className="font-mono text-[11px] tracking-wide2 uppercase text-fg-secondary mb-3">Market Cap Split</h3>
+      <h3 className="font-mono text-[11px] tracking-wide2 uppercase text-fg-secondary mb-1">Market Cap Split</h3>
+      <p className="text-[11px] text-fg-secondary leading-snug mb-3">
+        Large cap = bigger, more established companies; small cap = smaller, higher-risk/higher-growth ones.
+      </p>
       <div className="space-y-3">
         {data.map((d, i) => (
           <div key={d.name} className="flex items-center gap-3">

@@ -8,7 +8,10 @@
 // deltas — display logic ported 1:1 from app/page.tsx's ChangeList
 // function, which was already correct. Never render weight-of-NAV or
 // ₹-value deltas for individual holdings here.
+import { useState } from 'react';
 import { Info, Plus, Minus, TrendingUp, TrendingDown } from 'lucide-react';
+import { InstrumentTag } from '@/components/InstrumentTag';
+import { parseHoldingName } from '@/lib/ui';
 import type { ChangeRow, ChangesData } from '@/lib/types';
 
 function fmtSigned(n: number, suffix = '%') {
@@ -20,42 +23,74 @@ function deltaColor(n: number) {
   return n > 0 ? 'text-success' : n < 0 ? 'text-error' : 'text-fg-secondary';
 }
 
+const BUCKET_TOOLTIP: Record<'added' | 'exited' | 'increased' | 'reduced', string> = {
+  added: 'New = first time this fund is disclosed as holding this position.',
+  increased: 'Increased = the fund bought more shares/units this month.',
+  reduced: 'Reduced = the fund sold some shares/units, but the position is still open.',
+  exited: 'Exited = the fund sold its entire position — no shares/units remain.',
+};
+
+const ROWS_COLLAPSED = 8;
+
 // Per-goal directive: quantity change only — never weight/NAV-value delta,
 // which reflects price movement rather than an actual position change.
 function ChangeRowList({ rows, kind }: { rows: ChangeRow[]; kind: 'added' | 'exited' | 'increased' | 'reduced' }) {
+  const [expanded, setExpanded] = useState(false);
   if (rows.length === 0) return null;
   const label = { added: 'New', exited: 'Exited', increased: 'Increased', reduced: 'Reduced' }[kind];
   const Icon = kind === 'added' ? Plus : kind === 'exited' ? Minus : kind === 'increased' ? TrendingUp : TrendingDown;
   const iconTone = kind === 'exited' || kind === 'reduced' ? 'text-error' : 'text-success';
+  const visible = rows.slice(0, expanded ? rows.length : ROWS_COLLAPSED);
   return (
     <div>
       <div className="flex items-center gap-1.5 mb-1.5">
         <Icon className={['h-3 w-3', iconTone].join(' ')} strokeWidth={2.25} />
-        <span className="font-mono text-[10px] tracking-meta uppercase text-fg-secondary">
+        <span
+          className="font-mono text-[10px] tracking-meta uppercase text-fg-secondary cursor-help"
+          title={BUCKET_TOOLTIP[kind]}
+        >
           {label} ({rows.length})
         </span>
       </div>
       <ul className="space-y-1">
-        {rows.slice(0, 8).map((r) => (
-          <li key={r.isin || r.name} className="flex items-center justify-between gap-2 text-[12.5px]">
-            <span className="text-fg-default truncate">{r.name}</span>
-            {r.quantity_delta != null ? (
-              <span
-                className={['font-mono tabular-nums shrink-0', deltaColor(r.quantity_delta)].join(' ')}
-                title={`${Math.round(r.quantity_delta).toLocaleString('en-IN')} units`}
-              >
-                {r.quantity_delta >= 0 ? '+' : ''}
-                {r.quantity_delta_pct != null ? fmtSigned(r.quantity_delta_pct) : Math.round(r.quantity_delta).toLocaleString('en-IN')}
+        {visible.map((r) => {
+          const { displayName, maturityDate } = parseHoldingName(r.name);
+          return (
+            <li key={r.isin || r.name} className="flex items-center justify-between gap-2 text-[12.5px]">
+              <span className="flex items-center gap-1.5 min-w-0">
+                <span className="text-fg-default truncate">{displayName}</span>
+                <InstrumentTag type={r.instrument_type} />
+                {maturityDate && (
+                  <span className="font-mono text-[9px] text-fg-disabled shrink-0" title={`Matures ${maturityDate}`}>
+                    {maturityDate}
+                  </span>
+                )}
               </span>
-            ) : (
-              <span className="text-[11px] text-fg-secondary font-mono shrink-0">qty not disclosed</span>
-            )}
-          </li>
-        ))}
-        {rows.length > 8 && (
-          <li className="text-[11px] text-fg-secondary font-mono">+{rows.length - 8} more</li>
-        )}
+              {r.quantity_delta != null ? (
+                <span
+                  className={['font-mono tabular-nums shrink-0', deltaColor(r.quantity_delta)].join(' ')}
+                  title={`${Math.round(r.quantity_delta).toLocaleString('en-IN')} units`}
+                >
+                  {r.quantity_delta >= 0 ? '+' : ''}
+                  {r.quantity_delta_pct != null ? fmtSigned(r.quantity_delta_pct) : Math.round(r.quantity_delta).toLocaleString('en-IN')}
+                </span>
+              ) : (
+                <span className="text-[11px] text-fg-secondary font-mono shrink-0">qty not disclosed</span>
+              )}
+            </li>
+          );
+        })}
       </ul>
+      {rows.length > ROWS_COLLAPSED && (
+        <button
+          type="button"
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-1 text-[11px] text-fg-secondary font-mono hover:text-fg-primary transition-colors focus-ring rounded-sm"
+          data-testid={`changes-expand-${kind}`}
+        >
+          {expanded ? 'Show less' : `+${rows.length - ROWS_COLLAPSED} more`}
+        </button>
+      )}
     </div>
   );
 }
@@ -76,6 +111,10 @@ export function ChangesPanel({ data, fromLabel, toLabel }: { data: ChangesData; 
       </div>
 
       <div className="p-3 space-y-4 overflow-y-auto scroll-thin" style={{ maxHeight: '420px' }}>
+        <p className="text-[11px] text-fg-secondary leading-snug">
+          Only real buy/sell activity is shown — moves driven purely by price, not by the fund manager, are excluded.
+        </p>
+
         {/* Portfolio-level KPI deltas (aggregate cash/equity/count/AUM — not
             individual-holding deltas, so the quantity-only restriction below
             doesn't apply to this strip). */}
@@ -109,7 +148,10 @@ export function ChangesPanel({ data, fromLabel, toLabel }: { data: ChangesData; 
 
         {category_drift && category_drift.length > 0 && (
           <div>
-            <div className="font-mono text-[10px] tracking-meta uppercase text-fg-secondary mb-1.5">Category Drift</div>
+            <div className="font-mono text-[10px] tracking-meta uppercase text-fg-secondary mb-1">Category Drift</div>
+            <p className="text-[11px] text-fg-secondary leading-snug mb-1.5">
+              How the fund&apos;s mix across categories shifted this month.
+            </p>
             <ul className="space-y-1">
               {category_drift.slice(0, 6).map((c) => (
                 <li key={c.name} className="flex items-center justify-between gap-2 text-[12.5px]">

@@ -38,13 +38,18 @@ export function diffHoldings(a: AnalyseData, b: AnalyseData) {
     if (!ha) {
       added.push({
         name: hb.name, isin: hb.isin, weight_a: 0, weight_b: hb.weight, delta: round2(hb.weight),
+        instrument_type: hb.instrument_type,
         ...quantityFields(undefined, hb.quantity),
       });
       continue;
     }
     const delta = round2(hb.weight - ha.weight);
     const qf = quantityFields(ha.quantity, hb.quantity);
-    const row = { name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta, ...qf };
+    const row = {
+      name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta,
+      instrument_type: hb.instrument_type ?? ha.instrument_type,
+      ...qf,
+    };
     // A position's weight drifts every month purely from price movement even when the
     // manager touched nothing — e.g. HDFC Bank's share count can be byte-for-byte
     // identical between two months while its NAV weight moves >0.4% just because the
@@ -67,6 +72,7 @@ export function diffHoldings(a: AnalyseData, b: AnalyseData) {
     if (!mapB.has(k)) {
       exited.push({
         name: ha.name, isin: ha.isin, weight_a: ha.weight, weight_b: 0, delta: round2(-ha.weight),
+        instrument_type: ha.instrument_type,
         ...quantityFields(ha.quantity, undefined),
       });
     }

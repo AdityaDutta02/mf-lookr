@@ -11,10 +11,12 @@ export function CategoryDonut({
   data,
   title,
   centerLabel,
+  caption,
 }: {
   data: WeightItem[];
   title: string;
   centerLabel: string;
+  caption?: string;
 }) {
   const sorted = [...data].sort((a, b) => b.weight - a.weight);
   const total = sorted.reduce((a, b) => a + b.weight, 0);
@@ -23,7 +25,10 @@ export function CategoryDonut({
 
   return (
     <div className="bg-card border border-line-subtle rounded-sm p-4 h-full" data-testid="category-donut">
-      <h3 className="font-mono text-[11px] tracking-wide2 uppercase text-fg-secondary mb-3">{title}</h3>
+      <h3 className={['font-mono text-[11px] tracking-wide2 uppercase text-fg-secondary', caption ? 'mb-1' : 'mb-3'].join(' ')}>
+        {title}
+      </h3>
+      {caption && <p className="text-[11px] text-fg-secondary leading-snug mb-3">{caption}</p>}
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
         <div className="relative h-[160px] w-[160px] sm:h-[176px] sm:w-[176px] shrink-0">
           <ResponsiveContainer width="100%" height="100%">

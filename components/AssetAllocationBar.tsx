@@ -7,10 +7,13 @@ export function AssetAllocationBar({ data }: { data: WeightItem[] }) {
   const total = data.reduce((a, b) => a + b.weight, 0) || 100;
   return (
     <div className="bg-card border border-line-subtle rounded-sm p-4" data-testid="asset-allocation-bar">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-1">
         <h3 className="font-mono text-[11px] tracking-wide2 uppercase text-fg-secondary">Asset Allocation</h3>
         <span className="font-mono text-[11px] text-fg-disabled tabular-nums">{total.toFixed(0)}% total</span>
       </div>
+      <p className="text-[11px] text-fg-secondary leading-snug mb-3">
+        How the fund&apos;s money is split across broad asset types — equity, debt, cash, etc.
+      </p>
       <div className="flex h-9 w-full rounded-sm overflow-hidden border border-line-subtle">
         {data.map((d, i) => {
           const color = catColor(i, d.name);

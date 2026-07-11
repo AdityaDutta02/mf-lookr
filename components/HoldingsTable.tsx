@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { InstrumentTag } from '@/components/InstrumentTag';
+import { parseHoldingName } from '@/lib/ui';
 import type { Holding } from '@/lib/types';
 
 type SortKey = 'name' | 'isin' | 'instrument_type' | 'sector' | 'quantity' | 'market_value' | 'weight';
@@ -10,14 +12,35 @@ type Dir = 'asc' | 'desc';
 // Base holdings table (not the changes/deltas panel) — quantity and ₹ market
 // value are both legitimate here, unlike ChangesPanel where only quantity
 // deltas are allowed. See ChangesPanel.tsx for that restriction.
-const COLS: { key: SortKey; label: string; num?: boolean; mono?: boolean; align?: 'right' }[] = [
+const COLS: { key: SortKey; label: string; num?: boolean; mono?: boolean; align?: 'right'; tooltip?: string }[] = [
   { key: 'name', label: 'Holding' },
   { key: 'isin', label: 'ISIN', mono: true },
   { key: 'instrument_type', label: 'Type' },
   { key: 'sector', label: 'Sector' },
-  { key: 'quantity', label: 'Quantity', num: true, mono: true, align: 'right' },
-  { key: 'market_value', label: 'Mkt Val ₹cr', num: true, mono: true, align: 'right' },
-  { key: 'weight', label: 'Weight %', num: true, mono: true, align: 'right' },
+  {
+    key: 'quantity',
+    label: 'Quantity',
+    num: true,
+    mono: true,
+    align: 'right',
+    tooltip: 'Number of shares/units the fund holds — 0 or blank means the source disclosure didn’t report a count.',
+  },
+  {
+    key: 'market_value',
+    label: 'Mkt Val ₹cr',
+    num: true,
+    mono: true,
+    align: 'right',
+    tooltip: 'The rupee value of this holding, in crores, as of the disclosure date.',
+  },
+  {
+    key: 'weight',
+    label: 'Weight %',
+    num: true,
+    mono: true,
+    align: 'right',
+    tooltip: 'What % of the fund’s total assets this single holding makes up.',
+  },
 ];
 
 export function HoldingsTable({ data }: { data: Holding[] }) {
@@ -79,8 +102,10 @@ export function HoldingsTable({ data }: { data: Holding[] }) {
                         'inline-flex items-center gap-1 hover:text-fg-primary transition-colors focus-ring rounded-sm',
                         active ? 'text-primary-hover' : 'text-fg-secondary',
                         c.align === 'right' ? 'flex-row-reverse' : '',
+                        c.tooltip ? 'cursor-help' : '',
                       ].join(' ')}
                       data-testid={`sort-${c.key}`}
+                      title={c.tooltip}
                     >
                       {c.label}
                       <Icon className="h-3 w-3" strokeWidth={2.25} />
@@ -91,10 +116,22 @@ export function HoldingsTable({ data }: { data: Holding[] }) {
             </tr>
           </thead>
           <tbody>
-            {rows.map((h, i) => (
+            {rows.map((h, i) => {
+              const { displayName, maturityDate } = parseHoldingName(h.name);
+              return (
               <tr key={h.isin + i} className="border-b border-line-subtle last:border-0 hover:bg-subtle transition-colors">
                 <td className="px-3 py-2 font-mono text-[11px] text-fg-disabled tabular-nums">{i + 1}</td>
-                <td className="px-3 py-2 text-[12.5px] text-fg-primary">{h.name}</td>
+                <td className="px-3 py-2 text-[12.5px] text-fg-primary">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="truncate">{displayName}</span>
+                    <InstrumentTag type={h.instrument_type} />
+                    {maturityDate && (
+                      <span className="font-mono text-[9px] text-fg-disabled shrink-0" title={`Matures ${maturityDate}`}>
+                        {maturityDate}
+                      </span>
+                    )}
+                  </div>
+                </td>
                 <td className="px-3 py-2 font-mono text-[11.5px] text-fg-secondary tabular-nums">{h.isin}</td>
                 <td className="px-3 py-2 text-[12px] text-fg-default whitespace-nowrap">{h.instrument_type}</td>
                 <td className="px-3 py-2 text-[12px] text-fg-secondary whitespace-nowrap">{h.sector}</td>
@@ -115,7 +152,8 @@ export function HoldingsTable({ data }: { data: Holding[] }) {
                   </div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

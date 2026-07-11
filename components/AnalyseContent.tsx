@@ -29,9 +29,23 @@ const fmtNav = (n: number | null) =>
 const fmtPct = (n: number | null) => (n == null ? '—' : n.toFixed(2) + '%');
 
 function donutMeta(asset: string) {
-  if (asset === 'equity') return { title: 'Sector Allocation', center: 'Sectors' };
-  if (asset === 'debt') return { title: 'Instrument Mix', center: 'Types' };
-  return { title: 'Category Breakdown', center: 'Categories' };
+  if (asset === 'equity')
+    return {
+      title: 'Sector Allocation',
+      center: 'Sectors',
+      caption: 'Which industries the fund’s equity holdings are concentrated in.',
+    };
+  if (asset === 'debt')
+    return {
+      title: 'Instrument Mix',
+      center: 'Types',
+      caption: 'The mix of debt instrument types (bonds, CDs, government paper, etc.) the fund holds.',
+    };
+  return {
+    title: 'Category Breakdown',
+    center: 'Categories',
+    caption: 'How the fund’s holdings are split across broad portfolio categories.',
+  };
 }
 
 async function api<T>(path: string, token: string, init?: RequestInit): Promise<T> {
@@ -40,12 +54,45 @@ async function api<T>(path: string, token: string, init?: RequestInit): Promise<
   return res.json() as Promise<T>;
 }
 
+// Separate from api<T>() above because /api/ai/insight's error body can carry
+// a `code` (e.g. "INSUFFICIENT_CREDITS" on a 402) that needs special-casing
+// into a clearer message — see app/api/ai/insight/route.ts.
+async function fetchAIInsight(fund: string, period: string, token: string): Promise<AIInsight> {
+  const res = await fetch('/api/ai/insight', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-embed-token': token },
+    body: JSON.stringify({ fund, period }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({ error: res.statusText }));
+    if (body.code === 'INSUFFICIENT_CREDITS') throw new Error('Out of AI credits.');
+    throw new Error(body.error ?? res.statusText);
+  }
+  return res.json() as Promise<AIInsight>;
+}
+
 export function AnalyseContent() {
   const { fund, period, token } = useFund();
   const [data, setData] = useState<ChangesData | null>(null);
   const [ai, setAi] = useState<AIInsight | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [error, setError] = useState<string | null>(null);
+  const [aiStatus, setAiStatus] = useState<'loading' | 'ready' | 'error'>('loading');
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  function loadAI(fundCode: string, periodVal: string, tok: string) {
+    setAiStatus('loading');
+    setAiError(null);
+    fetchAIInsight(fundCode, periodVal, tok)
+      .then((insight) => {
+        setAi(insight);
+        setAiStatus('ready');
+      })
+      .catch((e: Error) => {
+        setAiStatus('error');
+        setAiError(e.message);
+      });
+  }
 
   useEffect(() => {
     if (!fund || !period || !token) return;
@@ -53,20 +100,16 @@ export function AnalyseContent() {
     setError(null);
     setData(null);
     setAi(null);
+    setAiStatus('loading');
+    setAiError(null);
     api<ChangesData>(`/api/changes?fund=${fund.amfi_code}&period=${period}`, token)
       .then((d) => {
         setData(d);
         setStatus('ready');
-        // Fire-and-forget — never blocks the rest of the page from rendering.
-        api<AIInsight>('/api/ai/insight', token, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fund: fund.amfi_code, period }),
-        })
-          .then(setAi)
-          .catch(() => {
-            /* AI narrative is a nice-to-have — the deterministic data above already rendered */
-          });
+        // Never blocks the rest of the page from rendering — the deterministic
+        // data above is already set — but failures are now surfaced with a
+        // retry rather than hanging on "Generating…" forever.
+        loadAI(fund.amfi_code, period, token);
       })
       .catch((e: Error) => {
         setStatus('error');
@@ -123,12 +166,43 @@ export function AnalyseContent() {
       <section className="pt-8 sm:pt-9">
         <SectionLabel>Key Metrics</SectionLabel>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 lg:gap-6" data-testid="kpi-grid">
-          <KpiTile label="AUM" value={d.aum != null ? `${fmtCr(d.aum)} Cr` : '—'} hint="Assets under management" />
-          <KpiTile label="NAV" value={fmtNav(d.nav)} hint={`as of ${d.period_label}`} />
-          <KpiTile label="Expense Ratio" value={fmtPct(d.expense_ratio)} hint="Annual, regular plan" />
-          <KpiTile label="Holdings" value={String(d.holdings_count)} hint="Disclosed instruments" />
-          <KpiTile label="Deployable Cash" value={fmtPct(d.deployable_cash)} hint="Cash + equivalents" accent />
-          <KpiTile label="Total Weight" value={fmtPct(d.total_weight)} hint="Disclosure coverage" />
+          <KpiTile
+            label="AUM"
+            value={d.aum != null ? `${fmtCr(d.aum)} Cr` : '—'}
+            hint="Assets under management"
+            tooltip="Total money all investors have put into this fund."
+          />
+          <KpiTile
+            label="NAV"
+            value={fmtNav(d.nav)}
+            hint={`as of ${d.period_label}`}
+            tooltip="Net Asset Value — the price of one unit of the fund."
+          />
+          <KpiTile
+            label="Expense Ratio"
+            value={fmtPct(d.expense_ratio)}
+            hint="Annual, regular plan"
+            tooltip="The annual fee you pay, as a % of your investment, for the fund to manage your money."
+          />
+          <KpiTile
+            label="Holdings"
+            value={String(d.holdings_count)}
+            hint="Disclosed instruments"
+            tooltip="The number of distinct positions (stocks, bonds, cash instruments, etc.) the fund discloses holding."
+          />
+          <KpiTile
+            label="Deployable Cash"
+            value={fmtPct(d.deployable_cash)}
+            hint="Cash + equivalents"
+            tooltip="The % of the fund parked in cash or cash-like instruments (TREPS, T-Bills) rather than invested in securities."
+            accent
+          />
+          <KpiTile
+            label="Total Weight"
+            value={fmtPct(d.total_weight)}
+            hint="Disclosure coverage"
+            tooltip="What % of the fund's holdings we could confirm from the disclosure — should be close to 100%."
+          />
         </div>
       </section>
 
@@ -138,8 +212,23 @@ export function AnalyseContent() {
         <SectionLabel>Interpretation</SectionLabel>
         <div className="grid md:grid-cols-2 gap-4 items-stretch">
           <div className="overflow-y-auto scroll-thin" style={{ maxHeight: '420px' }}>
-            {ai ? (
+            {aiStatus === 'ready' && ai ? (
               <AIInsightPanel insight={ai} data={d} />
+            ) : aiStatus === 'error' ? (
+              <div
+                className="bg-card border border-line-subtle rounded-sm h-full flex flex-col items-center justify-center gap-3 px-4 py-8 text-center"
+                data-testid="ai-error"
+              >
+                <span className="text-[12.5px] text-error">{aiError ?? 'Could not generate AI interpretation.'}</span>
+                <button
+                  type="button"
+                  onClick={() => fund && period && token && loadAI(fund.amfi_code, period, token)}
+                  className="font-mono text-[11px] tracking-meta uppercase border border-line-default rounded-sm px-3 py-1.5 hover:bg-subtle transition-colors focus-ring"
+                  data-testid="ai-retry"
+                >
+                  Retry
+                </button>
+              </div>
             ) : (
               <div className="bg-card border border-line-subtle rounded-sm h-full flex items-center justify-center px-4 py-8 text-center">
                 <span className="text-[12.5px] text-fg-secondary">Generating AI interpretation…</span>
@@ -159,7 +248,7 @@ export function AnalyseContent() {
         <AssetAllocationBar data={d.asset_allocation} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 gap-4 mt-4">
           <div className="md:col-span-2 lg:col-span-2">
-            <CategoryDonut data={d.category_breakdown} title={meta.title} centerLabel={meta.center} />
+            <CategoryDonut data={d.category_breakdown} title={meta.title} centerLabel={meta.center} caption={meta.caption} />
           </div>
           <div className="space-y-4 md:col-span-2 lg:col-span-1">
             {isEquity && <MarketCapBar data={d.market_cap_breakdown} />}
@@ -194,7 +283,7 @@ export function AnalyseContent() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-1">
-            <TopHoldings data={d.top_holdings} totalCount={d.holdings_count} />
+            <TopHoldings data={d.top_holdings} totalCount={d.holdings_count} holdings={d.holdings} />
           </div>
           <div className="lg:col-span-2">
             <HoldingsTable data={d.holdings} />

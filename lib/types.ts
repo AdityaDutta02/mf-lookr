@@ -105,6 +105,9 @@ export interface ChangeRow {
   quantity_b: number | null;
   quantity_delta: number | null;
   quantity_delta_pct: number | null; // % change in quantity, independent of NAV/price moves
+  // Additive — carried over from the source Holding so the UI can tag CD/CP/
+  // T-Bill/G-Sec/TREPS rows distinctly from equity (see InstrumentTag).
+  instrument_type?: string;
 }
 export interface ChangesData {
   current: AnalyseData;
