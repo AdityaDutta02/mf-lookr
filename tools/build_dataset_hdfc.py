@@ -64,7 +64,50 @@ SCHEME_NAME_ALIASES = {
     # ("...Multi-Asset Active FOF Asset Active FOF (Formerly known as HDFC Asset
     # Allocator Fund of Funds)") — confirmed by inspecting that one file directly.
     "HDFC Multi-Asset Active FOF Asset Active FOF": "HDFC Multi-Asset Active FOF",
+    # Pre-2021/2022-era scheme names confirmed (via AMFI's HDFC section + HDFC's own
+    # "formerly known as" disclosures) to be older names for schemes AMFI now lists
+    # under a renamed identity — extending the archive back to 2021-04 surfaces these
+    # for the first time (the original 13-month recent-only build never saw them).
+    # Each was cross-checked against a plausible current AMFI counterpart before
+    # aliasing — none guessed from name similarity alone.
+    "HDFC Asset Allocator Fund of Fund": "HDFC Multi-Asset Active FOF",
+    "HDFC Asset Allocator Fund of Funds": "HDFC Multi-Asset Active FOF",
+    "HDFC Capital Builder Value Fund": "HDFC Value Fund",
+    "HDFC Developed World Indexes Fund Of Funds": "HDFC Developed World Overseas Equity Passive FOF",
+    "HDFC Dynamic PE Ratio Fund of Funds": "HDFC Balanced Advantage Fund",
+    "HDFC Gold Exchange Traded Fund": "HDFC Gold ETF",
+    "HDFC Gold Exchange Traded Fund.": "HDFC Gold ETF",
+    "HDFC Growth Opportunities Fund": "HDFC Large and Mid Cap Fund",
+    "HDFC Index Fund - BSE SENSEX Plan": "HDFC BSE Sensex Index Fund",
+    "HDFC Index Fund-S&P BSE SENSEX Plan": "HDFC BSE Sensex Index Fund",
+    "HDFC Index Fund-Sensex Plan": "HDFC BSE Sensex Index Fund",
+    "HDFC Index Fund-NIFTY 50 Plan": "HDFC Nifty 50 Index Fund",
+    "HDFC Mid-Cap Opportunities Fund": "HDFC Mid Cap Fund",
+    "HDFC Childrens Gift Fund": "HDFC Childrens Fund",
+    "HDFC NIFTY 50 Exchange Traded Fund": "HDFC NIFTY 50 ETF",
+    "HDFC NIFTY BANK EXCHANGE TRADED FUND": "HDFC NIFTY Bank ETF",
+    "HDFC NIFTY Bank Exchange Traded Fund": "HDFC NIFTY Bank ETF",
+    "HDFC S&P BSE SENSEX Exchange Traded Fund": "HDFC BSE Sensex ETF",
+    "HDFC S&P BSE SENSEX ETF": "HDFC BSE Sensex ETF",
+    "HDFC Sensex Exchange Traded Fund": "HDFC BSE Sensex ETF",
+    "HDFC Taxsaver Fund": "HDFC ELSS Tax saver",
+    "HDFC Top 100 Fund": "HDFC Large Cap Fund",
+    # En-dash ("–") separator variant of the SENSEX Index Fund plan name — the
+    # trailing-parenthetical strip below removes "(AN OPEN-ENDED...)" but leaves
+    # this base text, which still needs the same rename alias as the regular
+    # hyphen variants above.
+    "HDFC Index Fund – S&P BSE SENSEX Plan": "HDFC BSE Sensex Index Fund",
 }
+
+# Some older-era xlsx titles keep the "(An Open Ended ... Fund)" scheme-type
+# parenthetical baked into row0/col0 that parse_hdfc_xlsx.find_fund_name()
+# normally strips — confirmed cases where it didn't (e.g. an unusual "–" en-dash
+# separator instead of the regular "(" the parser's regex expects right after a
+# space) slip through as scheme_name here. A second, cheap strip at match time
+# (before the exact/alias/fuzzy lookups) is a safety net, not a replacement for
+# the parser-side fix — same "extension lies" defensive posture as the rest of
+# this pipeline.
+TRAILING_PAREN_RE = re.compile(r"\s*[\(\[].*$", re.DOTALL)
 
 
 def norm(s: str) -> str:
@@ -141,10 +184,23 @@ def load_amfi_hdfc():
 
 
 def match_scheme(scheme_name: str, amfi_index: dict, unmatched_log: list):
+    # Alias lookup first (exact raw name, before any stripping — some aliases are
+    # keyed on the untouched title including its parenthetical, e.g. the July 2025
+    # duplicated-text typo above).
     lookup_name = SCHEME_NAME_ALIASES.get(scheme_name, scheme_name)
     key = norm(lookup_name)
     if key in amfi_index:
         return amfi_index[key]
+    # Safety-net: strip a trailing "(...)"/"[...]" scheme-type description that
+    # parse_hdfc_xlsx.find_fund_name() normally already removes — confirmed cases
+    # (an en-dash separator instead of the expected pattern) let it slip through
+    # to here. Re-check both plain and alias-mapped forms of the stripped name.
+    stripped = TRAILING_PAREN_RE.sub("", lookup_name).strip()
+    if stripped != lookup_name:
+        stripped = SCHEME_NAME_ALIASES.get(stripped, stripped)
+        key = norm(stripped)
+        if key in amfi_index:
+            return amfi_index[key]
     # Fuzzy fallback — HDFC's xlsx title occasionally drops connector words
     # ("HDFC Banking  Financial Services Fund" vs AMFI's "...Banking & Financial
     # Services Fund"). Conservative cutoff to avoid cross-scheme false matches.

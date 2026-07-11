@@ -48,6 +48,18 @@ Each workbook may have a second "Derivative...` sheet (SEBI derivative-
 disclosure notice, not a holdings table) — it has no "Name Of the
 Instrument" header row, so parse_sheet() naturally returns no fund_name for
 it and callers skip it, same as any sheet that doesn't match.
+
+Two confirmed one-off SOURCE-FILE data-quality issues (not parser bugs, left
+as-is — trust-band mismatch on those exact fund-months is expected and
+correct, not a sign the parser needs to guess a "fixed" number):
+  - 2023-09 HDFC Dividend Yield Fund: the Grand Total row's own % to NAV
+    cell is blank in the source file (grand_total comes back None) even
+    though the underlying holdings sum to a sane ~99.98%.
+  - 2024-04 HDFC Flexi Cap Fund: the "Net Current Assets" holding row's own
+    % to NAV cell (-17.42) is internally inconsistent with that same
+    section's own Sub Total/Total rows (-0.17, which matches the market
+    value / Grand Total AUM ratio) — a literal typo/formatting error in
+    HDFC's own workbook, confirmed by cross-checking the market-value column.
 """
 import json
 import re
@@ -148,7 +160,13 @@ def find_fund_name(rows):
         return None
     # Description is usually "(...)" but at least one confirmed month (Feb-Apr 2026,
     # HDFC Nifty India Consumption Index Fund) uses "[...]" instead — strip either.
-    return re.sub(r"\s*[\(\[].*$", "", cell).strip()
+    # re.DOTALL is load-bearing: at least one confirmed file (2023-09 HDFC
+    # Childrens Gift Fund) has an embedded newline INSIDE the parenthetical
+    # description, which without DOTALL stops "." from crossing the line break
+    # and silently leaves the whole ugly parenthetical text un-stripped —
+    # confirmed by inspection (the un-fixed name broke AMFI identity matching
+    # in build_dataset_hdfc.py downstream).
+    return re.sub(r"\s*[\(\[].*$", "", cell, flags=re.DOTALL).strip()
 
 
 def cell(r, idx):
@@ -178,17 +196,25 @@ def parse_sheet(rows):
         label_cell = cell(r, COL_ISIN)
         label = label_cell.strip() if isinstance(label_cell, str) else None
 
-        # A pure section-marker / Sub Total / Total / Grand Total row has its text in
-        # col1 (the ISIN column doubling as the label column) and no Name in col3.
+        # A Sub Total / Total / Grand Total row is identified purely by its col1
+        # label — checked BEFORE looking at Name, because at least one confirmed
+        # source file (2023-10 HDFC Corporate Bond Fund) has stray numeric junk
+        # (a coupon value) leaking into the Name column on the same row as
+        # "Grand Total", which would otherwise let it slip through as a phantom
+        # holding and double-count the whole book (confirmed: 190 holdings
+        # summing to 206% instead of ~100% before this fix).
+        if label and SKIP_RE.match(label):
+            if label.upper() == "GRAND TOTAL":
+                grand_total = num(cell(r, COL_WEIGHT))
+                # Everything after Grand Total is a different table (Top Ten
+                # Holdings / NAV history / riskometer) with numeric junk in the
+                # same column positions — stop here, same fix as PPFAS's.
+                break
+            continue
+
+        # A pure section-marker row has its text in col1 (the ISIN column
+        # doubling as the label column) and no Name in col3.
         if label and not name:
-            if SKIP_RE.match(label):
-                if label.upper() == "GRAND TOTAL":
-                    grand_total = num(cell(r, COL_WEIGHT))
-                    # Everything after Grand Total is a different table (Top Ten
-                    # Holdings / NAV history / riskometer) with numeric junk in the
-                    # same column positions — stop here, same fix as PPFAS's.
-                    break
-                continue
             # Only overwrite the tracked label when the new text itself matches a
             # known category — nested structural sub-headers ("(a) Listed /
             # awaiting listing...") are reused verbatim across sections and carry
