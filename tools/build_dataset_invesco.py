@@ -53,8 +53,48 @@ PLAN_STOPWORDS = {
 # the scheme AMFI now lists as "Invesco India ELSS Tax Saver Fund" (SEBI's
 # 2018 ELSS-category renaming round) — see parse_invesco_xlsx.py's
 # find_fund_name docstring.
+#
+# Full-history backfill (2012-09..) surfaced the AMC's original brand name,
+# "Religare" then "Religare Invesco" (pre-2016 Invesco-acquisition
+# rebranding to "Invesco India") on many older disclosure files. Each entry
+# below was confirmed by direct product-category match against the CURRENT
+# AMFI feed (same category, same underlying strategy, only the brand prefix
+# differs) — not guessed. Two adjacent cases were deliberately NOT aliased
+# because the evidence points the other way:
+#   - "Religare/Religare Invesco Gilt Fund - Short Duration Plan": no
+#     "Invesco India"-branded file of this name ever appears (unlike the
+#     Long Duration Plan below, which does survive into the "Invesco India"
+#     era before losing its plan-type suffix) — the Short Duration Plan was
+#     wound up/merged during the Religare->Invesco transition itself, so it
+#     has no live counterpart to alias to.
+#   - "Religare Invesco Overnight Fund" (a single 2014-01 file, internally
+#     labeled that way inside what the site's own manifest files under
+#     "Invesco India Ultra Short Duration Fund"): SEBI's "Overnight Fund"
+#     regulatory category didn't exist until Oct 2018, so a 2014 file
+#     genuinely named that can't be the same product as today's Overnight
+#     Fund — left unmatched rather than misattributing its holdings.
 SCHEME_NAME_ALIASES = {
     "Invesco India Tax Plan": "Invesco India ELSS Tax Saver Fund",
+    "Invesco India Gilt Fund - Long Duration Plan": "Invesco India Gilt Fund",
+    "Religare Gilt Fund - Long Duration Plan": "Invesco India Gilt Fund",
+    "Religare Invesco Gilt Fund - Long Duration Plan": "Invesco India Gilt Fund",
+    "Religare Arbitrage Fund": "Invesco India Arbitrage Fund",
+    "Religare Invesco Arbitrage Fund": "Invesco India Arbitrage Fund",
+    "Religare Contra Fund": "Invesco India Contra Fund",
+    "Religare Invesco Contra Fund": "Invesco India Contra Fund",
+    "Religare Gold Exchange Traded Fund": "Invesco India Gold Exchange Traded Fund",
+    "Religare Invesco Gold Exchange Traded Fund": "Invesco India Gold Exchange Traded Fund",
+    "Religare Infrastructure Fund": "Invesco India Infrastructure Fund",
+    "Religare Invesco Infrastructure Fund": "Invesco India Infrastructure Fund",
+    "Religare Liquid Fund": "Invesco India Liquid Fund",
+    "Religare Invesco Liquid Fund": "Invesco India Liquid Fund",
+    "Religare Mid Cap Fund": "Invesco India Midcap Fund",
+    "Religare Invesco Mid Cap Fund": "Invesco India Midcap Fund",
+    "Religare PSU Equity Fund": "Invesco India PSU Equity Fund",
+    "Religare Invesco PSU Equity Fund": "Invesco India PSU Equity Fund",
+    "Religare NIFTY Exchange Traded Fund": "Invesco India Nifty 50 Exchange Traded Fund",
+    "Religare Invesco NIFTY Exchange Traded Fund": "Invesco India Nifty 50 Exchange Traded Fund",
+    "Religare Invesco Nifty Exchange Traded Fund": "Invesco India Nifty 50 Exchange Traded Fund",
 }
 
 

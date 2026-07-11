@@ -91,12 +91,30 @@ def classify(section_label: str, name: str = "") -> str:
     return "equity"
 
 
+NUM_PREFIX_RE = re.compile(r"^\s*(-?[\d,]+\.?\d*)")
+
+
 def num(v):
     if v is None or v == "" or v == "NIL" or v == "Nil":
         return None
     try:
         return float(v)
     except (TypeError, ValueError):
+        # Some weight/quantity cells carry a trailing footnote marker glued
+        # onto the number as a string, e.g. "1.41 $" for lock-in shares
+        # ("$ Values post illiquidity discount on account of lock-in
+        # period" — a confirmed 2021 quirk) — strip it rather than drop the
+        # whole holding, which otherwise silently under-counts the weight
+        # total (confirmed: ESG Equity Fund / Focused 20 Equity Fund
+        # 2021-08..2022-08 trust-band mismatches were exactly this, off by
+        # the missing lock-in-share row's weight to the cent).
+        if isinstance(v, str):
+            m = NUM_PREFIX_RE.match(v)
+            if m and m.group(1) not in ("", "-", "."):
+                try:
+                    return float(m.group(1).replace(",", ""))
+                except ValueError:
+                    return None
         return None
 
 
@@ -142,21 +160,37 @@ def find_fund_name(rows):
     Fund") has no literal "fund" substring at all — so key off the
     statement-label row's position instead.
 
-    Usually the name row comes right AFTER the statement-label row, but one
-    confirmed month (2024-03, all 37 schemes) has them in the opposite
-    order — name row immediately BEFORE the statement-label row, with a
-    blank row after it — so check the following row first, then fall back
-    to the preceding row."""
+    Usually the name row comes right AFTER the statement-label row (name +
+    parenthetical description on one line), but two other layouts are
+    confirmed in the wild:
+      - 2024-03 (all 37 schemes): opposite order — name row immediately
+        BEFORE the statement-label row, with a blank row after it.
+      - some other pre-2025 files (e.g. "Invesco India PSU Equity Fund",
+        2024-03): the name and its parenthetical description are on TWO
+        separate rows, both BEFORE the statement-label row (name, then a
+        row that is ONLY the parenthetical) — stripping the parenthetical
+        from that continuation row alone leaves "", so it must be skipped
+        in favor of the row before it.
+    So: scan outward from the statement-label row (immediate neighbors
+    first), skip any candidate row that is nothing but a parenthetical
+    continuation, and return the first candidate that still has real text
+    after stripping a trailing parenthetical."""
     for i, r in enumerate(rows[:8]):
         if any(isinstance(c, str) and STATEMENT_LABEL_RE.search(c) for c in r):
-            for j in (i + 1, i - 1):
-                if 0 <= j < len(rows):
-                    for c in rows[j]:
-                        if isinstance(c, str) and c.strip():
-                            # Strip trailing parenthetical description, whether on
-                            # the same line or after an embedded newline (both
-                            # forms occur).
-                            return re.sub(r"\s*[\(\[].*$", "", c, flags=re.DOTALL).strip()
+            for j in (i + 1, i - 1, i - 2, i + 2, i - 3, i + 3):
+                if j == i or not (0 <= j < len(rows)):
+                    continue
+                for c in rows[j]:
+                    if not (isinstance(c, str) and c.strip()):
+                        continue
+                    text = c.strip()
+                    if text.startswith("(") or text.startswith("["):
+                        continue  # pure continuation row, not the name itself
+                    # Strip trailing parenthetical description, whether on the
+                    # same line or after an embedded newline (both forms occur).
+                    name = re.sub(r"\s*[\(\[].*$", "", text, flags=re.DOTALL).strip()
+                    if name:
+                        return name
             break
     return None
 
