@@ -15,7 +15,8 @@
 // dbBulkInsert is fine there, a unique_violation on re-run means "already
 // correct."
 import { NextRequest, NextResponse } from "next/server";
-import { dbBulkInsert, dbDelete, dbList } from "@/lib/db";
+import { dbDelete, dbList } from "@/lib/db";
+import { bulkInsertChunked } from "@/lib/seed-bulk";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -42,23 +43,6 @@ interface DisclosureRow {
   period: string;
 }
 
-// dbBulkInsert caps at 1000 rows/call (see lib/db.ts). ICICI's bundle (146
-// funds x 18 months of disclosures) is comfortably over that, same as
-// HDFC's — every bulk insert here is chunked. Keep the chunk size
-// comfortably under the 1000-row cap.
-const CHUNK_SIZE = 900;
-
-async function bulkInsertChunked<T extends Record<string, unknown>>(table: string, rows: T[], token: string) {
-  const inserted: unknown[] = [];
-  const errors: { index: number; error: string }[] = [];
-  for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
-    const chunk = rows.slice(i, i + CHUNK_SIZE);
-    const result = await dbBulkInsert(table, chunk, token);
-    inserted.push(...result.inserted);
-    errors.push(...result.errors.map((e) => ({ index: e.index + i, error: e.error })));
-  }
-  return { inserted, errors };
-}
 
 export async function POST(req: NextRequest) {
   const token = req.headers.get("x-embed-token");

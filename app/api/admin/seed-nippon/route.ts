@@ -19,7 +19,8 @@
 // a future backfill wants it; this route's bundle was deliberately kept to the
 // project's "minimum useful bar" window to keep the committed data.json size sane.
 import { NextRequest, NextResponse } from "next/server";
-import { dbBulkInsert, dbDelete, dbList } from "@/lib/db";
+import { dbDelete, dbList } from "@/lib/db";
+import { bulkInsertChunked } from "@/lib/seed-bulk";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -46,22 +47,6 @@ interface DisclosureRow {
   period: string;
 }
 
-// dbBulkInsert caps at 1000 rows/call (see lib/db.ts). Nippon's bundle (100+
-// schemes x 18 months = ~1,900 disclosures) doesn't fit in one call, so every
-// bulk insert here is chunked, same as seed-hdfc/route.ts.
-const CHUNK_SIZE = 900;
-
-async function bulkInsertChunked<T extends Record<string, unknown>>(table: string, rows: T[], token: string) {
-  const inserted: unknown[] = [];
-  const errors: { index: number; error: string }[] = [];
-  for (let i = 0; i < rows.length; i += CHUNK_SIZE) {
-    const chunk = rows.slice(i, i + CHUNK_SIZE);
-    const result = await dbBulkInsert(table, chunk, token);
-    inserted.push(...result.inserted);
-    errors.push(...result.errors.map((e) => ({ index: e.index + i, error: e.error })));
-  }
-  return { inserted, errors };
-}
 
 export async function POST(req: NextRequest) {
   const token = req.headers.get("x-embed-token");

@@ -15,7 +15,8 @@
 // plain dbBulkInsert is fine there, a unique_violation on re-run means
 // "already correct."
 import { NextRequest, NextResponse } from "next/server";
-import { dbBulkInsert, dbDelete, dbList } from "@/lib/db";
+import { dbDelete, dbList } from "@/lib/db";
+import { bulkInsertChunked } from "@/lib/seed-bulk";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -49,11 +50,15 @@ export async function POST(req: NextRequest) {
   if (!token) return NextResponse.json({ error: "missing embed token" }, { status: 401 });
 
   // Defense in depth: refuse to run if the bundled data ever drifts from the
-  // amc_slug this route is allowed to touch.
-  const offending = [...bundle.amcs, ...bundle.funds, ...bundle.disclosures].find(
+  // amc_slug this route is allowed to touch. `amcs` rows key their AMC
+  // identity as `slug`, not `amc_slug` (that field only exists on `funds`/
+  // `disclosures` rows) — checking all three arrays for `amc_slug` was a bug
+  // that made every `amcs` row a false positive, since it has no such field.
+  const offendingAmc = bundle.amcs.find((row) => (row as { slug?: string }).slug !== AMC_SLUG);
+  const offendingFundOrDisclosure = [...bundle.funds, ...bundle.disclosures].find(
     (row) => (row as { amc_slug?: string }).amc_slug !== AMC_SLUG,
   );
-  if (offending) {
+  if (offendingAmc || offendingFundOrDisclosure) {
     return NextResponse.json(
       { error: `bundle contains a row not scoped to amc_slug "${AMC_SLUG}"` },
       { status: 500 },
@@ -61,15 +66,15 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const amcResult = await dbBulkInsert("amcs", bundle.amcs, token);
-    const fundResult = await dbBulkInsert("funds", bundle.funds, token);
+    const amcResult = await bulkInsertChunked("amcs", bundle.amcs, token);
+    const fundResult = await bulkInsertChunked("funds", bundle.funds, token);
 
     const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: AMC_SLUG }, token);
     for (const row of existing) {
       await dbDelete("disclosures", row.id, token);
     }
 
-    const disclosureResult = await dbBulkInsert("disclosures", bundle.disclosures, token);
+    const disclosureResult = await bulkInsertChunked("disclosures", bundle.disclosures, token);
 
     return NextResponse.json({
       amcs: { inserted: amcResult.inserted.length, errors: amcResult.errors },
