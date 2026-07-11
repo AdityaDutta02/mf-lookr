@@ -109,9 +109,33 @@ GRAND_TOTAL_RE = re.compile(r"^total net assets\b", re.IGNORECASE)
 # earlier version of this parser did) double-counts the section twice.
 # Fix: only the DATED "Reverse Repo (...)" form counts as a leaf; the bare
 # "Reverse Repo" row is treated as a pure section label like any other.
+#
+# "CBLO" (Collateralized Borrowing and Lending Obligation) is the pre-~2018/19
+# era's cash-equivalent instrument name — TREPS didn't exist yet as a category
+# (RBI discontinued CBLO and introduced TREPS in Oct 2018). Confirmed across
+# every 2015-2018 sample checked: "CBLO" always appears as a single bare row
+# with its own weight, immediately followed by "Net Current Assets" or
+# "Others" (never has child rows of its own, unlike bare "Reverse Repo"
+# above) — so it's safe to always treat as a leaf, same as TREPS today.
+# Missing this was the single largest source of pre-2019 trust-band
+# mismatches (an 18%+ weight gap per fund in some months) since CBLO wasn't
+# in this pattern at all and doesn't match any SECTION_TYPE_MAP pattern
+# either, so it was silently dropped entirely as neither a leaf nor a
+# recognized section label.
 STANDALONE_LEAF_RE = re.compile(
-    r"^(net current assets|net receivables?|treps|reverse repo\s*\(|cash margin)", re.IGNORECASE
+    r"^(net current assets|net receivables?|treps|reverse repo\s*\(|cash margin|cblo)", re.IGNORECASE
 )
+# Individual bank-deposit leaf rows under the "Deposits (Placed as Margin)"
+# subsection — pre-2019-era arbitrage/hedged-equity funds only, e.g. "ICICI
+# Bank Ltd. - 12 Dec 2016 (Duration - 364 Days)". No ISIN, no Industry/Rating
+# value (that column is genuinely blank for these, unlike the "has an
+# industry value" tell case 3 relies on for other one-off leaf rows), so
+# these were being silently dropped as pure section-subtotal noise. Confirmed
+# safe: the parent "Deposits (Placed as Margin)" header row's own text never
+# recurs verbatim in these (each child's name embeds its own date), so
+# there's no risk of double-counting the header via the existing bare-label
+# repeat check above.
+DURATION_DEPOSIT_RE = re.compile(r"\(duration\s*-?\s*\d+\s*days?\)", re.IGNORECASE)
 DERIVATIVE_MARKER_RE = re.compile(r"\$\$")
 
 SECTION_TYPE_MAP = [
@@ -119,7 +143,7 @@ SECTION_TYPE_MAP = [
     (re.compile(r"commercial paper", re.I), "cp"),
     (re.compile(r"treasury\s*bills?\b", re.I), "tbill"),
     (re.compile(r"government securit|g-?sec|state government|state development loan", re.I), "gsec"),
-    (re.compile(r"treps|reverse repo", re.I), "treps"),
+    (re.compile(r"treps|reverse repo|cblo", re.I), "treps"),
     (re.compile(r"securitised|securitized", re.I), "securitized"),
     (re.compile(r"alternative investment fund|\baif\b", re.I), "fund"),
     (re.compile(r"mutual fund", re.I), "fund"),
@@ -134,7 +158,7 @@ SECTION_TYPE_MAP = [
         ),
         "corporate_debt",
     ),
-    (re.compile(r"cash margin|net current|net receivable", re.I), "cash"),
+    (re.compile(r"cash margin|net current|net receivable|deposit", re.I), "cash"),
     (re.compile(r"future|option|derivative|hedg", re.I), "derivative"),
     (re.compile(r"preference share", re.I), "preference"),
     (re.compile(r"equity", re.I), "equity"),
@@ -286,6 +310,7 @@ def parse_sheet(rows):
             #     though they carry a nonzero subtotal weight of their own.
             is_standalone_leaf = bool(
                 STANDALONE_LEAF_RE.match(name) or DERIVATIVE_MARKER_RE.search(name)
+                or DURATION_DEPOSIT_RE.search(name)
             )
             if not is_standalone_leaf:
                 matches_section_pattern = any(pat.search(name) for pat, _ in SECTION_TYPE_MAP)

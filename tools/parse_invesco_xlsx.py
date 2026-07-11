@@ -135,20 +135,28 @@ STATEMENT_LABEL_RE = re.compile(r"monthly portfolio statement", re.I)
 def find_fund_name(rows):
     """Structural, not content-keyword-based: every sample inspected (recent
     and pre-2020 alike) has a "Monthly Portfolio Statement as on <date>" row
-    immediately followed by a row whose first text cell is the scheme's full
-    name + a parenthetical scheme-type description. PPFAS's/HDFC's "cell
-    contains the word 'fund'" heuristic doesn't work here — at least one
-    confirmed older scheme name ("Invesco India Tax Plan", pre-rename to
-    "...ELSS Tax Saver Fund") has no literal "fund" substring at all — so
-    key off the statement-label row's position instead."""
+    adjacent to a row whose first text cell is the scheme's full name + a
+    parenthetical scheme-type description. PPFAS's/HDFC's "cell contains the
+    word 'fund'" heuristic doesn't work here — at least one confirmed older
+    scheme name ("Invesco India Tax Plan", pre-rename to "...ELSS Tax Saver
+    Fund") has no literal "fund" substring at all — so key off the
+    statement-label row's position instead.
+
+    Usually the name row comes right AFTER the statement-label row, but one
+    confirmed month (2024-03, all 37 schemes) has them in the opposite
+    order — name row immediately BEFORE the statement-label row, with a
+    blank row after it — so check the following row first, then fall back
+    to the preceding row."""
     for i, r in enumerate(rows[:8]):
         if any(isinstance(c, str) and STATEMENT_LABEL_RE.search(c) for c in r):
-            if i + 1 < len(rows):
-                for c in rows[i + 1]:
-                    if isinstance(c, str) and c.strip():
-                        # Strip trailing parenthetical description, whether on the
-                        # same line or after an embedded newline (both forms occur).
-                        return re.sub(r"\s*[\(\[].*$", "", c, flags=re.DOTALL).strip()
+            for j in (i + 1, i - 1):
+                if 0 <= j < len(rows):
+                    for c in rows[j]:
+                        if isinstance(c, str) and c.strip():
+                            # Strip trailing parenthetical description, whether on
+                            # the same line or after an embedded newline (both
+                            # forms occur).
+                            return re.sub(r"\s*[\(\[].*$", "", c, flags=re.DOTALL).strip()
             break
     return None
 

@@ -34,6 +34,7 @@ const SEED_TARGETS = [
   { slug: 'navi', label: 'Navi' },
   { slug: 'sbi', label: 'SBI' },
   { slug: 'icici', label: 'ICICI Prudential' },
+  { slug: 'axis', label: 'Axis' },
 ];
 
 function PageBody() {
