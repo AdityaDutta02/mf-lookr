@@ -15,22 +15,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbDelete, dbList } from "@/lib/db";
 import { bulkInsertChunked } from "@/lib/seed-bulk";
-import fs from "node:fs";
-import path from "node:path";
+import { loadBundle } from "@/lib/seed-data";
 
-// Read at request time rather than `import bundle from "./data.json"` — a
-// static import makes TypeScript infer a giant literal type from the JSON's
-// full content, which OOMs the type-checker once several fund houses' large
-// bundles (30-60MB each) are all statically imported at once across the
-// seed-* routes. A runtime read sidesteps that entirely.
-interface Bundle {
-  amcs: Record<string, unknown>[];
-  funds: Record<string, unknown>[];
-  disclosures: Record<string, unknown>[];
-}
-const bundle: Bundle = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), "app/api/admin/seed-mirae/data.json"), "utf8")
-);
+// Supports either a single data.json or chunked data-0.json, data-1.json,
+// ... (see tools/split_bundle.py) — full-history bundles can exceed
+// GitHub's hard 100MB-per-file cap as a single file.
+const bundle = loadBundle("seed-mirae");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
