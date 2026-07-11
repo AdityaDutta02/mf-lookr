@@ -22,6 +22,20 @@ const equityPct = (d: AnalyseData) =>
   d.asset_allocation.filter((a) => /equity/i.test(a.name)).reduce((s, a) => s + a.weight, 0);
 const normName = (s: string) => s.trim().toLowerCase().replace(/[.,]/g, "").replace(/\s+/g, " ");
 
+// Quantity is only meaningful when both sides disclosed a nonzero share/unit count
+// (0 is the sentinel the parser writes for "not disclosed" — TREPS/cash rows,
+// or any source that lacks quantity entirely, like the factsheet PDF).
+function quantityFields(qa: number | undefined, qb: number | undefined) {
+  const known_a = qa != null && qa > 0;
+  const known_b = qb != null && qb > 0;
+  const quantity_a = known_a ? qa! : null;
+  const quantity_b = known_b ? qb! : null;
+  if (!known_a && !known_b) return { quantity_a, quantity_b, quantity_delta: null, quantity_delta_pct: null };
+  const delta = (quantity_b ?? 0) - (quantity_a ?? 0);
+  const pct = quantity_a && quantity_a !== 0 ? round2((delta / quantity_a) * 100) : null;
+  return { quantity_a, quantity_b, quantity_delta: Math.round(delta * 100) / 100, quantity_delta_pct: pct };
+}
+
 function diffHoldings(a: AnalyseData, b: AnalyseData) {
   const keyOf = (h: { isin: string; name: string }) => (h.isin && h.isin !== "—" ? h.isin : normName(h.name));
   const mapA = new Map(a.holdings.map((h) => [keyOf(h), h]));
@@ -33,15 +47,27 @@ function diffHoldings(a: AnalyseData, b: AnalyseData) {
   for (const [k, hb] of mapB) {
     const ha = mapA.get(k);
     if (!ha) {
-      added.push({ name: hb.name, isin: hb.isin, weight_a: 0, weight_b: hb.weight, delta: round2(hb.weight) });
+      added.push({
+        name: hb.name, isin: hb.isin, weight_a: 0, weight_b: hb.weight, delta: round2(hb.weight),
+        ...quantityFields(undefined, hb.quantity),
+      });
     } else {
       const delta = round2(hb.weight - ha.weight);
-      if (delta > 0.01) increased.push({ name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta });
-      else if (delta < -0.01) reduced.push({ name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta });
+      const row = {
+        name: hb.name, isin: hb.isin, weight_a: ha.weight, weight_b: hb.weight, delta,
+        ...quantityFields(ha.quantity, hb.quantity),
+      };
+      if (delta > 0.01) increased.push(row);
+      else if (delta < -0.01) reduced.push(row);
     }
   }
   for (const [k, ha] of mapA) {
-    if (!mapB.has(k)) exited.push({ name: ha.name, isin: ha.isin, weight_a: ha.weight, weight_b: 0, delta: round2(-ha.weight) });
+    if (!mapB.has(k)) {
+      exited.push({
+        name: ha.name, isin: ha.isin, weight_a: ha.weight, weight_b: 0, delta: round2(-ha.weight),
+        ...quantityFields(ha.quantity, undefined),
+      });
+    }
   }
   const byAbs = (x: ChangeRow, y: ChangeRow) => Math.abs(y.delta) - Math.abs(x.delta);
   return {

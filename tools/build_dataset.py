@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Join a parsed PPFAS period (tools/out/ppfas/<period>.json) with AMFI identity
-(tools/cache/amfi_nav.txt) into the app's AnalyseData contract, and emit a bundle
-the app's seed route can insert directly (amcs / funds / disclosures rows).
+"""Join a parsed PPFAS period (tools/out/ppfas_xlsx/<period>.json — from the
+"Detailed Portfolio Disclosure" XLS, NOT the factsheet PDF; see
+parse_ppfas_xlsx.py) with AMFI identity into the app's AnalyseData contract,
+and emit a bundle the app's seed route can insert directly (amcs / funds /
+disclosures rows).
 
-Deterministic derivation only — no AI, no guessed numbers. Mirrors the old app's
-ARCHITECTURE.md derivation rules, adapted to this source's instrument_type set.
+Deterministic derivation only — no AI, no guessed numbers. Each holding's own
+ISIN and quantity now come straight from the source XLS (the factsheet PDF
+this rebuild used originally has neither — see parse_ppfas.py docstring).
 """
 import json
 import re
@@ -12,7 +15,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
-OUT_DIR = ROOT / "out" / "ppfas"
+OUT_DIR = ROOT / "out" / "ppfas_xlsx"
 AMFI_PATH = ROOT / "cache" / "amfi_nav.txt"
 
 MONTHS = ["", "January", "February", "March", "April", "May", "June",
@@ -74,21 +77,15 @@ def category_breakdown(holdings, top_n=8):
     return rows[:top_n]
 
 
-def parse_aum(info):
-    for k, v in info.items():
-        if "assets under management" in k.lower():
-            n = re.search(r"[\d,]+\.\d+", v)
-            if n:
-                return float(n.group(0).replace(",", ""))
-    return None
-
-
 def build_disclosure(canonical_name, period, bucket):
     holdings = bucket["holdings"]
     ident = AMFI_IDENTITY[canonical_name]
     total_weight = round(sum(h["weight"] for h in holdings), 2)
     top_holdings = sorted(holdings, key=lambda h: -h["weight"])[:10]
     deployable_cash = round(sum(h["weight"] for h in holdings if h["type"] in DEPLOYABLE_TYPES), 2)
+    # AUM = sum of every holding's disclosed market value — direct from the source XLS,
+    # no text-parsing needed (unlike the old factsheet-PDF path).
+    aum = round(sum(h["market_value_cr"] for h in holdings if h.get("market_value_cr") is not None), 2)
     year, month = period.split("-")
     data = {
         "amfi_code": ident["code"],
@@ -101,8 +98,8 @@ def build_disclosure(canonical_name, period, bucket):
         "period_label": f"{MONTHS[int(month)]} {year}",
         "as_of_date": f"{period}-{['31','28','31','30','31','30','31','31','30','31','30','31'][int(month)-1]}",
         "source_org": "PPFAS Mutual Fund",
-        "source_url": f"https://amc.ppfas.com/downloads/factsheet/{year}/",
-        "aum": parse_aum(bucket["info"]),
+        "source_url": f"https://amc.ppfas.com/downloads/portfolio-disclosure/{year}/",
+        "aum": aum or None,
         "nav": None,
         "expense_ratio": None,
         "holdings_count": len(holdings),
@@ -119,7 +116,8 @@ def build_disclosure(canonical_name, period, bucket):
         "holdings": [
             {
                 "name": h["name"], "isin": h["isin"], "instrument_type": h["type"],
-                "sector": h.get("industry", ""), "weight": h["weight"], "market_value": 0, "quantity": 0,
+                "sector": h.get("industry", ""), "weight": h["weight"],
+                "market_value": h.get("market_value_cr") or 0, "quantity": h.get("quantity") or 0,
             }
             for h in holdings
         ],

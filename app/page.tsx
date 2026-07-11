@@ -240,6 +240,7 @@ export default function HomePage() {
                   <th className="py-1.5 font-normal">Name</th>
                   <th className="py-1.5 font-normal">Type</th>
                   <th className="py-1.5 font-normal">Sector / rating</th>
+                  <th className="py-1.5 font-normal text-right">Quantity</th>
                   <th className="py-1.5 font-normal text-right">Weight</th>
                 </tr>
               </thead>
@@ -249,6 +250,9 @@ export default function HomePage() {
                     <td className="py-1.5 pr-3">{h.name}</td>
                     <td className="py-1.5 pr-3 text-fg-secondary">{h.instrument_type}</td>
                     <td className="py-1.5 pr-3 text-fg-secondary">{h.sector}</td>
+                    <td className="py-1.5 text-right font-mono text-fg-secondary">
+                      {h.quantity ? Math.round(h.quantity).toLocaleString() : "—"}
+                    </td>
                     <td className="py-1.5 text-right font-mono">{pct(h.weight)}</td>
                   </tr>
                 ))}
@@ -270,17 +274,24 @@ function Kpi({ label, value }: { label: string; value: string }) {
   );
 }
 
-function ChangeList({ title, rows }: { title: string; rows: { name: string; delta: number; weight_b: number }[] }) {
+function ChangeList({ title, rows }: { title: string; rows: import("@/lib/types").ChangeRow[] }) {
   if (rows.length === 0) return null;
   return (
     <div className="mb-3">
       <div className="text-xs font-medium text-fg-secondary mb-1">{title} ({rows.length})</div>
       <ul className="text-sm flex flex-col gap-0.5">
         {rows.slice(0, 15).map((r) => (
-          <li key={r.name} className="flex justify-between border-b border-line-subtle py-1">
-            <span>{r.name}</span>
-            <span className={`font-mono ${r.delta >= 0 ? "text-success" : "text-error"}`}>
-              {r.delta >= 0 ? "+" : ""}{r.delta.toFixed(2)}%
+          <li key={r.name} className="flex justify-between items-baseline border-b border-line-subtle py-1 gap-3">
+            <span className="truncate">{r.name}</span>
+            <span className="flex items-baseline gap-3 shrink-0">
+              {r.quantity_delta_pct != null && (
+                <span className="text-xs text-fg-secondary font-mono">
+                  qty {r.quantity_delta_pct >= 0 ? "+" : ""}{r.quantity_delta_pct.toFixed(1)}%
+                </span>
+              )}
+              <span className={`font-mono ${r.delta >= 0 ? "text-success" : "text-error"}`}>
+                {r.delta >= 0 ? "+" : ""}{r.delta.toFixed(2)}%
+              </span>
             </span>
           </li>
         ))}

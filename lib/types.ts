@@ -97,6 +97,14 @@ export interface ChangeRow {
   weight_a: number;
   weight_b: number;
   delta: number;
+  // Share/unit count, not just %-of-NAV weight — lets a reader tell an actual
+  // buy/sell from a position merely drifting with price. Only populated when the
+  // source discloses quantity (the PPFAS "Detailed Portfolio Disclosure" XLS does;
+  // the factsheet PDF does not — see tools/parse_ppfas.py vs parse_ppfas_xlsx.py).
+  quantity_a: number | null;
+  quantity_b: number | null;
+  quantity_delta: number | null;
+  quantity_delta_pct: number | null; // % change in quantity, independent of NAV/price moves
 }
 export interface ChangesData {
   current: AnalyseData;
