@@ -27,13 +27,15 @@ export default function HomePage() {
   const [periods, setPeriods] = useState<{ period: string }[] | null>(null);
   const [data, setData] = useState<ChangesData | null>(null);
   const [seeding, setSeeding] = useState(false);
+  const [seedStatus, setSeedStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [refreshTick, setRefreshTick] = useState(0);
 
   useEffect(() => {
     if (!token || view.kind !== "amcs") return;
     setError(null);
     api<AmcSummary[]>("/api/amcs", token).then(setAmcs).catch((e) => setError(String(e.message ?? e)));
-  }, [token, view.kind]);
+  }, [token, view.kind, refreshTick]);
 
   useEffect(() => {
     if (!token || view.kind !== "funds") return;
@@ -61,13 +63,22 @@ export default function HomePage() {
   async function seed() {
     if (!token) return;
     setSeeding(true);
+    setSeedStatus(null);
     try {
-      const res = await api<Record<string, { inserted: number }>>("/api/admin/seed-ppfas", token, { method: "POST" });
-      alert(`Seeded: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted}`).join(", ")}`);
+      // window.alert() is silently swallowed inside the embedded viewer iframe (no
+      // "allow-modals" permission) — surface the result in-page instead, or a
+      // successful seed looks indistinguishable from a no-op click.
+      const res = await api<Record<string, { inserted: number; errors: unknown[] }>>(
+        "/api/admin/seed-ppfas",
+        token,
+        { method: "POST" },
+      );
+      setSeedStatus(`Seeded: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted}`).join(", ")}`);
       setAmcs(null);
       setView({ kind: "amcs" });
+      setRefreshTick((t) => t + 1);
     } catch (e) {
-      alert(`Seed failed: ${(e as Error).message}`);
+      setSeedStatus(`Seed failed: ${(e as Error).message}`);
     } finally {
       setSeeding(false);
     }
@@ -93,6 +104,17 @@ export default function HomePage() {
         </button>
       </header>
 
+      {seedStatus && (
+        <div
+          className={`mb-4 text-sm rounded-sm p-3 border ${
+            seedStatus.startsWith("Seed failed")
+              ? "text-error bg-tint-error border-tint-error-border"
+              : "text-success bg-tint-success border-tint-info-border"
+          }`}
+        >
+          {seedStatus}
+        </div>
+      )}
       {error && <div className="mb-4 text-sm text-error bg-tint-error border border-tint-error-border rounded-sm p-3">{error}</div>}
 
       <nav className="text-xs text-fg-secondary mb-4 flex gap-2 items-center">
