@@ -1,53 +1,18 @@
-// One-shot bootstrap: inserts the locally-parsed PPFAS bundle (built by
-// tools/build_dataset.py from the local extraction toolkit — see tools/README.md)
-// into amcs/funds/disclosures via the gateway.
-//
-// disclosures are fully SCRUBBED (delete every existing ppfas row, then insert fresh)
-// on every run, not just replaced for the periods this bundle happens to cover. A
-// partial "only delete matching keys" replace was tried first and left room for stale
-// rows to survive a re-run (e.g. from an earlier bundle that covered different
-// periods, or a parser change that renamed a fund) — full scrub removes that risk
-// entirely. amcs/funds are stable identity data — plain dbBulkInsert is fine there,
-// a unique_violation on re-run means "already correct."
-import { NextRequest, NextResponse } from "next/server";
-import { dbList } from "@/lib/db";
-import { bulkInsertChunked, deleteAllChunked } from "@/lib/seed-bulk";
+// One-shot bootstrap: inserts the locally-parsed PPFAS bundle into
+// amcs/funds/disclosures via the gateway. Hard-scoped to amc_slug: "ppfas"
+// only — must never read/delete/insert a differently-slugged row. Seeding is
+// driven step-by-step by the client (see app/page.tsx's seed()) rather than
+// one big request — see lib/seed-actions.ts for why and the shared handler.
+import { NextRequest } from "next/server";
+import { handleSeedAction } from "@/lib/seed-actions";
 import { loadBundle } from "@/lib/seed-data";
 
-// Supports either a single data.json or chunked data-0.json, data-1.json,
-// ... (see tools/split_bundle.py) — full-history bundles can exceed
-// GitHub's hard 100MB-per-file cap as a single file.
+const AMC_SLUG = "ppfas";
 const bundle = loadBundle("seed-ppfas");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-interface DisclosureRow {
-  id: string;
-  amfi_code: string;
-  period: string;
-}
-
 export async function POST(req: NextRequest) {
-  const token = req.headers.get("x-embed-token");
-  if (!token) return NextResponse.json({ error: "missing embed token" }, { status: 401 });
-
-  try {
-    const amcResult = await bulkInsertChunked("amcs", bundle.amcs, token);
-    const fundResult = await bulkInsertChunked("funds", bundle.funds, token);
-
-    const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: "ppfas" }, token);
-    await deleteAllChunked("disclosures", existing.map((r) => r.id), token);
-
-    const disclosureResult = await bulkInsertChunked("disclosures", bundle.disclosures, token);
-
-    return NextResponse.json({
-      amcs: { inserted: amcResult.inserted.length, errors: amcResult.errors },
-      funds: { inserted: fundResult.inserted.length, errors: fundResult.errors },
-      disclosures_scrubbed: existing.length,
-      disclosures: { inserted: disclosureResult.inserted.length, errors: disclosureResult.errors },
-    });
-  } catch (e) {
-    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
-  }
+  return handleSeedAction(req, AMC_SLUG, bundle);
 }

@@ -20,6 +20,14 @@ async function api<T>(path: string, token: string, init?: RequestInit): Promise<
   return res.json() as Promise<T>;
 }
 
+async function seedAction<T>(slug: string, token: string, action: string, body?: Record<string, unknown>): Promise<T> {
+  return api<T>(`/api/admin/seed-${slug}`, token, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...body }),
+  });
+}
+
 // Each entry needs a deployed app/api/admin/seed-<slug>/route.ts + bundled
 // data.json (built by tools/build_dataset_<slug>.py) — this list only grows
 // as each fund house's local parse-and-verify pass is done, never before.
@@ -58,17 +66,52 @@ function PageBody() {
     return <main className="min-h-[100dvh] flex items-center justify-center text-fg-secondary text-sm">Connecting…</main>;
   }
 
+  // Seeding is driven step-by-step from here rather than one big server
+  // request — a full-history AMC's scrub-then-reload (1000+ deletes,
+  // thousands of inserts) took long enough in a single request that the
+  // platform gateway's own timeout killed the connection with a 502 before
+  // the route could respond, even though the work was succeeding
+  // server-side. Each step below is small and fast; see lib/seed-actions.ts.
   async function seed() {
     if (!token) return;
     setSeeding(true);
     setSeedStatus(null);
     try {
       // window.alert() is silently swallowed inside the embedded viewer iframe
-      // (no "allow-modals" permission) — surface the result in-page instead.
-      const res = await api<Record<string, { inserted: number; errors: unknown[] }>>(`/api/admin/seed-${seedTarget}`, token, {
-        method: 'POST',
-      });
-      setSeedStatus(`Seeded ${seedTarget}: ${Object.entries(res).map(([k, v]) => `${k}=${v.inserted ?? v}`).join(', ')}`);
+      // (no "allow-modals" permission) — surface progress in-page instead.
+      const { ids } = await seedAction<{ ids: string[] }>(seedTarget, token, 'list-existing');
+      const DELETE_BATCH = 40;
+      for (let i = 0; i < ids.length; i += DELETE_BATCH) {
+        const batch = ids.slice(i, i + DELETE_BATCH);
+        await seedAction(seedTarget, token, 'delete-batch', { ids: batch });
+        setSeedStatus(`Seeding ${seedTarget}: clearing old rows ${Math.min(i + DELETE_BATCH, ids.length)}/${ids.length}…`);
+      }
+
+      const identity = await seedAction<{
+        amcs: { inserted: number; errors: unknown[] };
+        funds: { inserted: number; errors: unknown[] };
+      }>(seedTarget, token, 'insert-identity');
+
+      let offset = 0;
+      let total = 0;
+      let inserted = 0;
+      for (;;) {
+        const res = await seedAction<{ inserted: number; nextOffset: number; total: number; done: boolean }>(
+          seedTarget,
+          token,
+          'insert-disclosures-batch',
+          { offset },
+        );
+        inserted += res.inserted;
+        offset = res.nextOffset;
+        total = res.total;
+        setSeedStatus(`Seeding ${seedTarget}: ${offset}/${total} disclosures…`);
+        if (res.done) break;
+      }
+
+      setSeedStatus(
+        `Seeded ${seedTarget}: amcs=${identity.amcs.inserted}, funds=${identity.funds.inserted}, disclosures=${inserted}/${total} (cleared ${ids.length} old rows)`,
+      );
     } catch (e) {
       setSeedStatus(`Seed failed (${seedTarget}): ${(e as Error).message}`);
     } finally {
