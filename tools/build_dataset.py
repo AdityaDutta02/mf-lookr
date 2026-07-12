@@ -32,6 +32,24 @@ AMFI_IDENTITY = {
     "Parag Parikh Arbitrage Fund": {"code": "152109", "isin": "INF879O01225"},
     "Parag Parikh Liquid Fund": {"code": "143269", "isin": "INF879O01068"},
 }
+# PPFAS has renamed some schemes over the years — the XLS sheet's own "Name of
+# the Scheme" field reflects whatever the fund was called *at the time*, so the
+# same fund shows up under different literal strings across eras. Canonicalize
+# to the current name (the AMFI_IDENTITY key) so one fund gets one continuous
+# history instead of being split into several "unknown fund" buckets.
+FUND_NAME_ALIASES = {
+    "PPFAS Long Term Value Fund": "Parag Parikh Flexi Cap Fund",
+    "Parag Parikh Long Term Value Fund": "Parag Parikh Flexi Cap Fund",
+    "Parag Parikh Long Term Equity Fund": "Parag Parikh Flexi Cap Fund",
+    "Parag Parikh Tax Saver Fund": "Parag Parikh ELSS Tax Saver Fund",
+}
+
+
+def canonical_fund_name(name: str) -> str:
+    name = re.sub(r"\s+", " ", name).strip()
+    return FUND_NAME_ALIASES.get(name, name)
+
+
 CATEGORY = {
     "Parag Parikh Flexi Cap Fund": "Equity - Flexi Cap Fund",
     "Parag Parikh ELSS Tax Saver Fund": "Equity - ELSS",
@@ -141,7 +159,7 @@ def build_disclosure(canonical_name, period, bucket):
 
 def main():
     periods = sys.argv[1:] or ["2026-05"]
-    amcs = [{"slug": "ppfas", "name": "PPFAS Mutual Fund", "factsheet_url": "https://amc.ppfas.com/downloads/factsheet/", "archive_from": "2013-06", "status": "loaded"}]
+    amcs = [{"slug": "ppfas", "name": "PPFAS Mutual Fund", "factsheet_url": "https://amc.ppfas.com/downloads/factsheet/", "archive_from": "2014-03", "status": "loaded"}]
     funds = []
     disclosures = []
     seen_funds = set()
@@ -152,7 +170,8 @@ def main():
             print(f"skip {period}: not parsed yet")
             continue
         parsed = json.loads(path.read_text())
-        for canonical_name, bucket in parsed.items():
+        for raw_name, bucket in parsed.items():
+            canonical_name = canonical_fund_name(raw_name)
             if canonical_name not in AMFI_IDENTITY:
                 continue
             ident = AMFI_IDENTITY[canonical_name]

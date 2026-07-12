@@ -10,8 +10,14 @@
 // entirely. amcs/funds are stable identity data — plain dbBulkInsert is fine there,
 // a unique_violation on re-run means "already correct."
 import { NextRequest, NextResponse } from "next/server";
-import { dbBulkInsert, dbDelete, dbList } from "@/lib/db";
-import bundle from "./data.json";
+import { dbDelete, dbList } from "@/lib/db";
+import { bulkInsertChunked } from "@/lib/seed-bulk";
+import { loadBundle } from "@/lib/seed-data";
+
+// Supports either a single data.json or chunked data-0.json, data-1.json,
+// ... (see tools/split_bundle.py) — full-history bundles can exceed
+// GitHub's hard 100MB-per-file cap as a single file.
+const bundle = loadBundle("seed-ppfas");
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,15 +33,15 @@ export async function POST(req: NextRequest) {
   if (!token) return NextResponse.json({ error: "missing embed token" }, { status: 401 });
 
   try {
-    const amcResult = await dbBulkInsert("amcs", bundle.amcs, token);
-    const fundResult = await dbBulkInsert("funds", bundle.funds, token);
+    const amcResult = await bulkInsertChunked("amcs", bundle.amcs, token);
+    const fundResult = await bulkInsertChunked("funds", bundle.funds, token);
 
     const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: "ppfas" }, token);
     for (const row of existing) {
       await dbDelete("disclosures", row.id, token);
     }
 
-    const disclosureResult = await dbBulkInsert("disclosures", bundle.disclosures, token);
+    const disclosureResult = await bulkInsertChunked("disclosures", bundle.disclosures, token);
 
     return NextResponse.json({
       amcs: { inserted: amcResult.inserted.length, errors: amcResult.errors },
