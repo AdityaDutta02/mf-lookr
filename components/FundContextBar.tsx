@@ -97,6 +97,12 @@ function FundSwitcher() {
   );
 }
 
+// Seed controls are dev/admin-only — loading a new AMC's corpus into prod is a
+// one-off operation, not something a normal viewer should see or trigger.
+// Gated behind NEXT_PUBLIC_SHOW_SEED so it stays out of the bundle by default;
+// flip it on via set_env_var + redeploy only while actively seeding a new AMC.
+const SHOW_SEED = process.env.NEXT_PUBLIC_SHOW_SEED === '1';
+
 export function FundContextBar({
   seedTargets,
   seedTarget,
@@ -117,32 +123,40 @@ export function FundContextBar({
   return (
     <div className="border-b border-line-subtle bg-card sticky top-0 z-30">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-3 flex items-center gap-2 sm:gap-3 flex-wrap">
-        <FundSwitcher />
+        {/* The home/search screen already has its own full-width search box
+            (SearchView) — showing this compact switcher too is a duplicate.
+            Only show it once a fund is selected, as a way to jump funds
+            without navigating back to home. */}
+        {fund && <FundSwitcher />}
         {fund && <PeriodPicker fund={fund} period={period} onSelect={selectPeriod} token={token} />}
         <div className="flex-1" />
-        <select
-          value={seedTarget}
-          onChange={(e) => onSeedTargetChange(e.target.value)}
-          disabled={seeding}
-          className="text-[10px] font-mono tracking-meta uppercase px-2 py-1.5 border border-line-subtle rounded-sm bg-card text-fg-secondary disabled:opacity-50 shrink-0"
-          data-testid="seed-target-select"
-        >
-          {seedTargets.map((t) => (
-            <option key={t.slug} value={t.slug}>
-              {t.label}
-            </option>
-          ))}
-        </select>
-        <button
-          onClick={onSeed}
-          disabled={seeding}
-          className="text-[10px] font-mono tracking-meta uppercase px-2.5 py-1.5 border border-line-subtle rounded-sm text-fg-secondary hover:bg-subtle disabled:opacity-50 shrink-0"
-          data-testid="seed-button"
-        >
-          {seeding ? 'Seeding…' : 'Seed (admin)'}
-        </button>
+        {SHOW_SEED && (
+          <>
+            <select
+              value={seedTarget}
+              onChange={(e) => onSeedTargetChange(e.target.value)}
+              disabled={seeding}
+              className="text-[10px] font-mono tracking-meta uppercase px-2 py-1.5 border border-line-subtle rounded-sm bg-card text-fg-secondary disabled:opacity-50 shrink-0"
+              data-testid="seed-target-select"
+            >
+              {seedTargets.map((t) => (
+                <option key={t.slug} value={t.slug}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={onSeed}
+              disabled={seeding}
+              className="text-[10px] font-mono tracking-meta uppercase px-2.5 py-1.5 border border-line-subtle rounded-sm text-fg-secondary hover:bg-subtle disabled:opacity-50 shrink-0"
+              data-testid="seed-button"
+            >
+              {seeding ? 'Seeding…' : 'Seed (admin)'}
+            </button>
+          </>
+        )}
       </div>
-      {seedStatus && (
+      {SHOW_SEED && seedStatus && (
         <div
           className={[
             'max-w-[1400px] mx-auto px-4 sm:px-6 pb-2.5 text-[11px] font-mono',

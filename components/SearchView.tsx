@@ -9,20 +9,43 @@
 import { Search, ArrowRight } from 'lucide-react';
 import { useFund } from '@/components/FundProvider';
 import { useFundSearch } from '@/hooks/use-fund-search';
-import type { SchemeMatch } from '@/lib/types';
+import type { FundSummary } from '@/lib/types';
+
+// One-click shortcuts so a first-time viewer doesn't have to type anything to
+// see the app in action. No usage/click tracking exists yet to rank real
+// popularity, so these are manually curated well-known funds across
+// different AMCs — swap the list as the corpus grows. Identities pulled from
+// the live committed seed bundles (amfi_code is the ground truth key).
+const POPULAR_FUNDS: FundSummary[] = [
+  {
+    amfi_code: '122639',
+    scheme_name: 'Parag Parikh Flexi Cap Fund - Direct Plan - Growth',
+    amc_slug: 'ppfas',
+    category: 'Equity - Flexi Cap Fund',
+    asset_class: 'equity',
+  },
+  {
+    amfi_code: '118955',
+    scheme_name: 'HDFC Flexi Cap Fund - Direct Plan - Growth',
+    amc_slug: 'hdfc',
+    category: 'Equity - Flexi Cap Fund',
+    asset_class: 'equity',
+  },
+  {
+    amfi_code: '108467',
+    scheme_name: 'ICICI Prudential Bluechip Fund - Direct Plan - Growth',
+    amc_slug: 'icici',
+    category: 'Equity - Large Cap Fund',
+    asset_class: 'equity',
+  },
+];
 
 export function SearchView() {
   const { selectFund, token } = useFund();
   const { query, setQuery, result, loading, failed } = useFundSearch(token);
 
-  function openScheme(m: SchemeMatch) {
-    selectFund({
-      amfi_code: m.amfi_code,
-      scheme_name: m.scheme_name,
-      amc_slug: m.amc_slug,
-      category: m.category,
-      asset_class: m.asset_class,
-    });
+  function openScheme(m: FundSummary) {
+    selectFund(m);
     // FundProvider's fund-change effect auto-resolves the latest stored period.
   }
 
@@ -53,6 +76,22 @@ export function SearchView() {
           data-testid="corpus-search-input"
         />
       </div>
+
+      {query.trim() === '' && (
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="font-mono text-[10px] tracking-meta uppercase text-fg-secondary">Popular</span>
+          {POPULAR_FUNDS.map((f) => (
+            <button
+              key={f.amfi_code}
+              onClick={() => openScheme(f)}
+              className="text-[12.5px] px-3 py-1.5 border border-line-subtle rounded-full text-fg-primary hover:bg-subtle hover:border-line-default transition-colors"
+              data-testid={`popular-fund-${f.amfi_code}`}
+            >
+              {f.scheme_name.replace(' - Direct Plan - Growth', '')}
+            </button>
+          ))}
+        </div>
+      )}
 
       {loading && (
         <div className="mt-6 py-16 text-center font-mono text-[12px] text-fg-secondary">Searching corpus…</div>
