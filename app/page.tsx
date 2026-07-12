@@ -79,12 +79,18 @@ function PageBody() {
     try {
       // window.alert() is silently swallowed inside the embedded viewer iframe
       // (no "allow-modals" permission) — surface progress in-page instead.
-      const { ids } = await seedAction<{ ids: string[] }>(seedTarget, token, 'list-existing');
-      const DELETE_BATCH = 40;
-      for (let i = 0; i < ids.length; i += DELETE_BATCH) {
-        const batch = ids.slice(i, i + DELETE_BATCH);
-        await seedAction(seedTarget, token, 'delete-batch', { ids: batch });
-        setSeedStatus(`Seeding ${seedTarget}: clearing old rows ${Math.min(i + DELETE_BATCH, ids.length)}/${ids.length}…`);
+      // Scrub old rows PER FUND, not AMC-wide — an AMC-wide list pulls every
+      // matching row's full holdings JSONB just to read its id, and that
+      // response was itself large enough to 502 even for a modest existing
+      // window (see lib/seed-actions.ts). Per-fund keeps every call tiny.
+      const { amfiCodes } = await seedAction<{ amfiCodes: string[] }>(seedTarget, token, 'list-funds');
+      let cleared = 0;
+      for (let i = 0; i < amfiCodes.length; i++) {
+        const res = await seedAction<{ cleared: number }>(seedTarget, token, 'clear-fund', {
+          amfiCode: amfiCodes[i],
+        });
+        cleared += res.cleared;
+        setSeedStatus(`Seeding ${seedTarget}: clearing old data ${i + 1}/${amfiCodes.length} funds…`);
       }
 
       const identity = await seedAction<{
@@ -110,7 +116,7 @@ function PageBody() {
       }
 
       setSeedStatus(
-        `Seeded ${seedTarget}: amcs=${identity.amcs.inserted}, funds=${identity.funds.inserted}, disclosures=${inserted}/${total} (cleared ${ids.length} old rows)`,
+        `Seeded ${seedTarget}: amcs=${identity.amcs.inserted}, funds=${identity.funds.inserted}, disclosures=${inserted}/${total} (cleared ${cleared} old rows)`,
       );
     } catch (e) {
       setSeedStatus(`Seed failed (${seedTarget}): ${(e as Error).message}`);

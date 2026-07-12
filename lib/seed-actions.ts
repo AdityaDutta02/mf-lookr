@@ -17,10 +17,17 @@
 //
 // Every action here is still hard-scoped to the ONE amc_slug baked into the
 // calling route.ts (via its own bundle + AMC_SLUG constant) — the action
-// name/body never lets a caller target a different AMC's rows. `ids` in
-// delete-batch are only ever ones this same route's own list-existing step
-// just handed back (itself filtered by amc_slug server-side), so this is a
-// pagination cursor, not client-controlled scope.
+// name/body never lets a caller target a different AMC's rows.
+//
+// The scrub step deliberately lists+deletes existing rows PER FUND
+// (amc_slug + amfi_code), not AMC-wide. An AMC-wide dbList("disclosures",
+// {amc_slug}) returns every matching row's FULL holdings JSONB blob just to
+// read its id — even a modest existing window (a few hundred rows) came
+// back large enough that the gateway's own reverse proxy 502'd on the
+// response, before our code ever got a chance to page through it (there's
+// no field-selection/pagination on dbList — see get_sdk_docs). Scoping to
+// one fund at a time keeps every list+delete response down to a handful of
+// rows, small enough to never be at risk.
 import { NextRequest, NextResponse } from "next/server";
 import { dbList } from "@/lib/db";
 import { bulkInsertChunked, deleteAllChunked } from "@/lib/seed-bulk";
@@ -33,7 +40,6 @@ interface DisclosureRow {
 }
 
 const DISCLOSURE_INSERT_BATCH = 300; // small enough that one gateway call (or two) always finishes fast
-const DELETE_BATCH_MAX = 50; // defensive cap — a coding bug shouldn't be able to fire an unbounded delete
 
 export async function handleSeedAction(req: NextRequest, amcSlug: string, bundle: Bundle): Promise<NextResponse> {
   const token = req.headers.get("x-embed-token");
@@ -41,21 +47,29 @@ export async function handleSeedAction(req: NextRequest, amcSlug: string, bundle
 
   const body = (await req.json().catch(() => ({}))) as {
     action?: string;
-    ids?: string[];
+    amfiCode?: string;
     offset?: number;
   };
 
   try {
     switch (body.action) {
-      case "list-existing": {
-        const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: amcSlug }, token);
-        return NextResponse.json({ ids: existing.map((r) => r.id) });
+      case "list-funds": {
+        const amfiCodes = [...new Set(bundle.funds.map((f) => String((f as { amfi_code?: string }).amfi_code)))];
+        return NextResponse.json({ amfiCodes });
       }
 
-      case "delete-batch": {
-        const ids = (body.ids ?? []).slice(0, DELETE_BATCH_MAX);
-        await deleteAllChunked("disclosures", ids, token);
-        return NextResponse.json({ deleted: ids.length });
+      case "clear-fund": {
+        const amfiCode = body.amfiCode ?? "";
+        // Scoped to amc_slug AND amfi_code — small response, safe to fetch
+        // in full and delete outright (see module docstring for why an
+        // AMC-wide list would 502 on response size).
+        const existing = await dbList<DisclosureRow>(
+          "disclosures",
+          { amc_slug: amcSlug, amfi_code: amfiCode },
+          token,
+        );
+        await deleteAllChunked("disclosures", existing.map((r) => r.id), token);
+        return NextResponse.json({ cleared: existing.length });
       }
 
       case "insert-identity": {
