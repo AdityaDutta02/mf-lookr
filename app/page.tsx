@@ -7,7 +7,7 @@
 // SearchView (home screen — no fund+period selected yet) or the full analyse
 // content once a fund+period is selected, mirroring mf-analyser's
 // AnalyseView.tsx layout.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FundProvider, useFund } from '@/components/FundProvider';
 import { FundContextBar } from '@/components/FundContextBar';
 import { SearchView } from '@/components/SearchView';
@@ -42,6 +42,17 @@ function PageBody() {
   const [seedTarget, setSeedTarget] = useState(SEED_TARGETS[1].slug); // default to HDFC — PPFAS is already loaded
   const [seeding, setSeeding] = useState(false);
   const [seedStatus, setSeedStatus] = useState<string | null>(null);
+  const [showSeed, setShowSeed] = useState(false);
+
+  useEffect(() => {
+    // Server-read flag (see app/api/admin/show-seed/route.ts) — deliberately
+    // NOT a NEXT_PUBLIC_ build-time constant, so toggling it via set_env_var
+    // + redeploy actually takes effect without a rebuild.
+    fetch('/api/admin/show-seed')
+      .then((r) => r.json())
+      .then((d: { showSeed: boolean }) => setShowSeed(d.showSeed))
+      .catch(() => {});
+  }, []);
 
   if (!token) {
     return <main className="min-h-[100dvh] flex items-center justify-center text-fg-secondary text-sm">Connecting…</main>;
@@ -68,6 +79,7 @@ function PageBody() {
   return (
     <div className="min-h-[100dvh] flex flex-col">
       <FundContextBar
+        showSeed={showSeed}
         seedTargets={SEED_TARGETS}
         seedTarget={seedTarget}
         onSeedTargetChange={setSeedTarget}

@@ -99,11 +99,11 @@ function FundSwitcher() {
 
 // Seed controls are dev/admin-only — loading a new AMC's corpus into prod is a
 // one-off operation, not something a normal viewer should see or trigger.
-// Gated behind NEXT_PUBLIC_SHOW_SEED so it stays out of the bundle by default;
-// flip it on via set_env_var + redeploy only while actively seeding a new AMC.
-const SHOW_SEED = process.env.NEXT_PUBLIC_SHOW_SEED === '1';
-
+// `showSeed` comes from /api/admin/show-seed (a server-read SHOW_SEED env
+// var, not NEXT_PUBLIC_) — flip it on via set_env_var + redeploy only while
+// actively seeding a new AMC, off otherwise.
 export function FundContextBar({
+  showSeed,
   seedTargets,
   seedTarget,
   onSeedTargetChange,
@@ -111,6 +111,7 @@ export function FundContextBar({
   seedStatus,
   onSeed,
 }: {
+  showSeed: boolean;
   seedTargets: { slug: string; label: string }[];
   seedTarget: string;
   onSeedTargetChange: (slug: string) => void;
@@ -130,7 +131,7 @@ export function FundContextBar({
         {fund && <FundSwitcher />}
         {fund && <PeriodPicker fund={fund} period={period} onSelect={selectPeriod} token={token} />}
         <div className="flex-1" />
-        {SHOW_SEED && (
+        {showSeed && (
           <>
             <select
               value={seedTarget}
@@ -156,7 +157,7 @@ export function FundContextBar({
           </>
         )}
       </div>
-      {SHOW_SEED && seedStatus && (
+      {showSeed && seedStatus && (
         <div
           className={[
             'max-w-[1400px] mx-auto px-4 sm:px-6 pb-2.5 text-[11px] font-mono',
