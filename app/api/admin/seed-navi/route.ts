@@ -13,7 +13,8 @@
 // same repo. amcs/funds are stable identity data — plain dbBulkInsert is fine
 // there, a unique_violation on re-run means "already correct."
 import { NextRequest, NextResponse } from "next/server";
-import { dbBulkInsert, dbDelete, dbList } from "@/lib/db";
+import { dbBulkInsert, dbList } from "@/lib/db";
+import { deleteAllChunked } from "@/lib/seed-bulk";
 import { loadBundle } from "@/lib/seed-data";
 
 // Supports either a single data.json or chunked data-0.json, data-1.json,
@@ -39,9 +40,7 @@ export async function POST(req: NextRequest) {
     const fundResult = await dbBulkInsert("funds", bundle.funds, token);
 
     const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: "navi" }, token);
-    for (const row of existing) {
-      await dbDelete("disclosures", row.id, token);
-    }
+    await deleteAllChunked("disclosures", existing.map((r) => r.id), token);
 
     const disclosureResult = await dbBulkInsert("disclosures", bundle.disclosures, token);
 

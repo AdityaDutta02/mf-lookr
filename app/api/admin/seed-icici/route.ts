@@ -15,8 +15,8 @@
 // dbBulkInsert is fine there, a unique_violation on re-run means "already
 // correct."
 import { NextRequest, NextResponse } from "next/server";
-import { dbDelete, dbList } from "@/lib/db";
-import { bulkInsertChunked } from "@/lib/seed-bulk";
+import { dbList } from "@/lib/db";
+import { bulkInsertChunked, deleteAllChunked } from "@/lib/seed-bulk";
 import { loadBundle } from "@/lib/seed-data";
 
 // Supports either a single data.json or chunked data-0.json, data-1.json,
@@ -45,9 +45,7 @@ export async function POST(req: NextRequest) {
     // Hard-scoped to amc_slug: "icici" — must never read/delete a
     // differently-slugged row.
     const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: "icici" }, token);
-    for (const row of existing) {
-      await dbDelete("disclosures", row.id, token);
-    }
+    await deleteAllChunked("disclosures", existing.map((r) => r.id), token);
 
     const disclosureResult = await bulkInsertChunked("disclosures", bundle.disclosures, token);
 

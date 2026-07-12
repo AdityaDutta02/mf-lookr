@@ -19,8 +19,8 @@
 // a future backfill wants it; this route's bundle was deliberately kept to the
 // project's "minimum useful bar" window to keep the committed data.json size sane.
 import { NextRequest, NextResponse } from "next/server";
-import { dbDelete, dbList } from "@/lib/db";
-import { bulkInsertChunked } from "@/lib/seed-bulk";
+import { dbList } from "@/lib/db";
+import { bulkInsertChunked, deleteAllChunked } from "@/lib/seed-bulk";
 import { loadBundle } from "@/lib/seed-data";
 
 // Supports either a single data.json or chunked data-0.json, data-1.json,
@@ -49,9 +49,7 @@ export async function POST(req: NextRequest) {
     // Hard-scoped to amc_slug: "nippon" — must never read/delete a ppfas- or
     // hdfc-slugged row.
     const existing = await dbList<DisclosureRow>("disclosures", { amc_slug: "nippon" }, token);
-    for (const row of existing) {
-      await dbDelete("disclosures", row.id, token);
-    }
+    await deleteAllChunked("disclosures", existing.map((r) => r.id), token);
 
     const disclosureResult = await bulkInsertChunked("disclosures", bundle.disclosures, token);
 
