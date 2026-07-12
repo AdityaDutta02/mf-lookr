@@ -20,16 +20,23 @@ const MAX_CHUNK_ROWS = 900; // stay under dbBulkInsert's hard 1000-row/call cap
 // enough that the platform gateway/browser dropped the connection
 // ("Failed to fetch") well before the route finished, even though the
 // deletes themselves were succeeding server-side. Fire them in small
-// concurrent batches instead — fast enough to finish inside the timeout,
-// while staying comfortably under the gateway's 600-calls/min budget
-// (10/batch every 250ms ≈ 40 calls/sec peak in short bursts, but the awaited
-// batching means real sustained throughput stays well under the limit).
-const DELETE_BATCH_SIZE = 10;
+// concurrent batches instead, PACED to stay under the gateway's 600
+// calls/min (=10/sec) budget — firing a batch as fast as each Promise.all
+// resolves (often well under 1s round-trip) can burst past that cap and
+// draw 429s that exhaust dbDelete's own retry budget, so each batch is
+// floored to a minimum 1100ms cadence regardless of how fast it finishes.
+const DELETE_BATCH_SIZE = 8;
+const DELETE_BATCH_MIN_MS = 1100;
 
 export async function deleteAllChunked(table: string, ids: string[], token: string): Promise<void> {
   for (let i = 0; i < ids.length; i += DELETE_BATCH_SIZE) {
     const batch = ids.slice(i, i + DELETE_BATCH_SIZE);
+    const started = Date.now();
     await Promise.all(batch.map((id) => dbDelete(table, id, token)));
+    const elapsed = Date.now() - started;
+    if (elapsed < DELETE_BATCH_MIN_MS && i + DELETE_BATCH_SIZE < ids.length) {
+      await new Promise((r) => setTimeout(r, DELETE_BATCH_MIN_MS - elapsed));
+    }
   }
 }
 

@@ -23,8 +23,19 @@ async function dbRequest(method: string, path: string, body?: unknown, embedToke
     body: body !== undefined ? JSON.stringify(body) : undefined,
   })
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: 'Unknown error' }))
-    throw new Error((err as { error: string }).error ?? `DB error ${res.status}`)
+    // Surface the real status + raw body on a non-JSON error response (e.g. a
+    // gateway 502/503 HTML page) instead of collapsing every such failure
+    // into an undiagnosable "Unknown error" — that string alone gave no way
+    // to tell a rate limit, a timeout, and a genuine data error apart.
+    const text = await res.text().catch(() => '')
+    let message = `DB error ${res.status}`
+    try {
+      const parsed = JSON.parse(text) as { error?: string }
+      if (parsed.error) message = parsed.error
+    } catch {
+      if (text) message = `DB error ${res.status}: ${text.slice(0, 300)}`
+    }
+    throw new Error(message)
   }
   return res
 }
