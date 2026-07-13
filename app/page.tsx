@@ -20,7 +20,20 @@ async function api<T>(path: string, token: string, init?: RequestInit): Promise<
   return res.json() as Promise<T>;
 }
 
-async function seedAction<T>(slug: string, token: string, action: string, body?: Record<string, unknown>): Promise<T> {
+// Takes getToken() (not a static token string) — a full-history AMC's seed
+// runs long enough that the embed token can be refreshed by the viewer
+// shell mid-operation (see FundProvider's getToken doc comment); calling
+// getToken() fresh before every single step, instead of once up front,
+// means the loop never gets stuck holding a token the shell has already
+// rotated away from.
+async function seedAction<T>(
+  slug: string,
+  getToken: () => string | null,
+  action: string,
+  body?: Record<string, unknown>,
+): Promise<T> {
+  const token = getToken();
+  if (!token) throw new Error('lost embed token mid-seed — reload and retry');
   return api<T>(`/api/admin/seed-${slug}`, token, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -46,7 +59,7 @@ const SEED_TARGETS = [
 ];
 
 function PageBody() {
-  const { fund, period, token } = useFund();
+  const { fund, period, token, getToken } = useFund();
   const [seedTarget, setSeedTarget] = useState(SEED_TARGETS[1].slug); // default to HDFC — PPFAS is already loaded
   const [seeding, setSeeding] = useState(false);
   const [seedStatus, setSeedStatus] = useState<string | null>(null);
@@ -83,10 +96,10 @@ function PageBody() {
       // matching row's full holdings JSONB just to read its id, and that
       // response was itself large enough to 502 even for a modest existing
       // window (see lib/seed-actions.ts). Per-fund keeps every call tiny.
-      const { amfiCodes } = await seedAction<{ amfiCodes: string[] }>(seedTarget, token, 'list-funds');
+      const { amfiCodes } = await seedAction<{ amfiCodes: string[] }>(seedTarget, getToken, 'list-funds');
       let cleared = 0;
       for (let i = 0; i < amfiCodes.length; i++) {
-        const res = await seedAction<{ cleared: number }>(seedTarget, token, 'clear-fund', {
+        const res = await seedAction<{ cleared: number }>(seedTarget, getToken, 'clear-fund', {
           amfiCode: amfiCodes[i],
         });
         cleared += res.cleared;
@@ -96,7 +109,7 @@ function PageBody() {
       const identity = await seedAction<{
         amcs: { inserted: number; errors: unknown[] };
         funds: { inserted: number; errors: unknown[] };
-      }>(seedTarget, token, 'insert-identity');
+      }>(seedTarget, getToken, 'insert-identity');
 
       let offset = 0;
       let total = 0;
@@ -104,7 +117,7 @@ function PageBody() {
       for (;;) {
         const res = await seedAction<{ inserted: number; nextOffset: number; total: number; done: boolean }>(
           seedTarget,
-          token,
+          getToken,
           'insert-disclosures-batch',
           { offset },
         );

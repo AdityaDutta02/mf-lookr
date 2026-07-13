@@ -28,6 +28,13 @@ interface FundCtx {
   /** Set fund + period together (e.g. from a deep search result that already knows the period). */
   selectFundAndPeriod: (f: FundSummary, p: string) => void;
   token: string | null;
+  /** Always returns the CURRENT embed token, unlike `token` which can be a
+   * stale closure value inside a long-running async loop (see seed() in
+   * app/page.tsx — a full-history AMC's seed can run well past the token's
+   * 15-minute expiry; useEmbedToken() auto-refreshes the token in state, but
+   * a closure that captured `token` once at the start of the loop never
+   * sees the refresh). Backed by a ref that's kept in sync with `token`. */
+  getToken: () => string | null;
 }
 
 const FundContext = createContext<FundCtx | null>(null);
@@ -44,6 +51,11 @@ export function FundProvider({ children }: { children: React.ReactNode }) {
   const [period, setPeriod] = useState<string | null>(null);
   // When set, the next fund-change effect uses this period instead of auto-picking the latest.
   const lockedPeriod = useRef<string | null>(null);
+  const tokenRef = useRef(token);
+  useEffect(() => {
+    tokenRef.current = token;
+  }, [token]);
+  const getToken = () => tokenRef.current;
 
   // On fund (or token) change, default to the latest stored period — unless an
   // explicit period was locked in by selectFundAndPeriod.
@@ -85,7 +97,7 @@ export function FundProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <FundContext.Provider value={{ fund, period, selectFund, selectPeriod, selectFundAndPeriod, token }}>
+    <FundContext.Provider value={{ fund, period, selectFund, selectPeriod, selectFundAndPeriod, token, getToken }}>
       {children}
     </FundContext.Provider>
   );
